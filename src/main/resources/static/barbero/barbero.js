@@ -18,13 +18,25 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
 
-            // Ordenamos las citas por fecha y hora para una mejor visualización
             citas.sort((a, b) => new Date(a.fecha + 'T' + a.hora) - new Date(b.fecha + 'T' + b.hora));
 
             citas.forEach(cita => {
                 const row = document.createElement('tr');
 
-                // Creamos un formato de hora más amigable (ej. 02:30 PM)
+                // --- INICIO DE LA MODIFICACIÓN ---
+
+                // 1. Añadimos un estilo para que el cursor cambie a una "manito" al pasar por encima.
+                row.style.cursor = 'pointer';
+
+                // 2. Añadimos un evento 'click' a toda la fila.
+                row.addEventListener('click', function() {
+                    // 3. Redirigimos al usuario a la nueva página de detalles.
+                    //    Pasamos el ID de la cita como un "parámetro de búsqueda" en la URL.
+                    window.location.href = `/barbero/detalle-cita.html?id=${cita.idCita}`;
+                });
+
+                // --- FIN DE LA MODIFICACIÓN ---
+
                 const horaFormatted = new Date(`1970-01-01T${cita.hora}`).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', hour12: true });
 
                 row.innerHTML = `
@@ -44,6 +56,5 @@ document.addEventListener('DOMContentLoaded', function() {
         }
     }
 
-    // Llamamos a la función al cargar la página
     cargarCitas();
 });
