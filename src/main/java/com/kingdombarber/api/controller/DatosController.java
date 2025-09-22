@@ -1,6 +1,7 @@
 package com.kingdombarber.api.controller;
 
 import java.util.Arrays;
+import java.util.Comparator;
 import java.util.List;
 import java.util.Map;
 import java.util.function.Function;
@@ -40,7 +41,6 @@ public class DatosController {
         // --- Carga de Sedes (solo si está vacío) ---
         if (sedeRepository.count() == 0) {
             System.out.println("Cargando sedes iniciales con los nombres correctos...");
-            // --> ¡CORRECCIÓN APLICADA AQUÍ!
             List<Sede> sedes = Arrays.asList(
                 crearSede("C.C Puerta del Norte"),
                 crearSede("C.C Parque Fabricato"),
@@ -49,11 +49,10 @@ public class DatosController {
                 crearSede("C.C Santafé"),
                 crearSede("C.C Premium Plaza")
             );
-            // --> FIN DE LA CORRECCIÓN
             sedeRepository.saveAll(sedes);
         }
 
-        // --- Carga de Servicios (sin cambios, ya estaba correcto) ---
+        // --- Carga de Servicios (sin cambios) ---
         if (servicioRepository.count() == 0) {
             System.out.println("Cargando servicios iniciales...");
             List<Servicio> servicios = Arrays.asList(
@@ -76,14 +75,15 @@ public class DatosController {
             servicioRepository.saveAll(servicios);
         }
 
-        // --- Carga de Barberos (se ajusta automáticamente a los nuevos nombres de sede) ---
+        // --- Carga de Barberos (sin cambios) ---
         if (barberoRepository.count() == 0) {
             System.out.println("Cargando lista COMPLETA de barberos...");
             Map<String, Sede> sedesMap = sedeRepository.findAll().stream()
                 .collect(Collectors.toMap(Sede::getNombreSede, Function.identity()));
 
             List<Barbero> barberos = Arrays.asList(
-                // C.C Puerta del Norte
+                // ... (el resto de la lista de barberos no necesita cambios)
+                 // C.C Puerta del Norte
                 crearBarbero("Ricardo", "Gómez", sedesMap.get("C.C Puerta del Norte")),
                 crearBarbero("Mateo", "Ramírez", sedesMap.get("C.C Puerta del Norte")),
                 crearBarbero("Carlos", "Fernández", sedesMap.get("C.C Puerta del Norte")),
@@ -208,7 +208,18 @@ public class DatosController {
     }
 
     // --- Endpoints ---
-    @GetMapping("/sedes") public List<Sede> getAllSedes() { return sedeRepository.findAll(); }
+    // *********************** ¡AQUÍ ESTÁ LA CORRECCIÓN! ***********************
+    @GetMapping("/sedes")
+    public List<Sede> getAllSedes() {
+        // Usamos un Stream para asegurar que la lista no tenga duplicados antes de enviarla.
+        // También la ordenamos por ID para mantener un orden consistente.
+        return sedeRepository.findAll().stream()
+                .sorted(Comparator.comparing(Sede::getIdSede))
+                .distinct() // Garantiza que cada sede sea única
+                .collect(Collectors.toList());
+    }
+    // ************************************************************************
+
     @GetMapping("/servicios") public List<Servicio> getAllServicios() { return servicioRepository.findAll(); }
     @GetMapping("/barberos") public List<Barbero> getAllBarberos() { return barberoRepository.findAll(); }
 }
