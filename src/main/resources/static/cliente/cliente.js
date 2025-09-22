@@ -1,33 +1,29 @@
 // Usamos 'DOMContentLoaded' para asegurarnos de que el HTML esté completamente cargado
 document.addEventListener('DOMContentLoaded', function() {
     
-    // --> ¡NUEVO! Bloque de seguridad y carga de datos del cliente
+    // Bloque de seguridad y carga de datos del cliente (sin cambios)
     const clienteNombre = localStorage.getItem('clienteNombre');
     const clienteApellido = localStorage.getItem('clienteApellido');
     const userRole = localStorage.getItem('userRole');
 
-    // 1. Verificamos si el usuario es un cliente. Si no, lo redirigimos al inicio.
     if (userRole !== 'cliente' || !clienteNombre || !clienteApellido) {
         alert('Acceso no autorizado. Por favor, identifíquese como cliente.');
-        window.location.href = '/index.html'; // Lo mandamos a la página de login
-        return; // Detenemos la ejecución del resto del script
+        window.location.href = '/index.html';
+        return;
     }
 
-    // 2. Obtenemos los campos de nombre y apellido del formulario.
     const nombreInput = document.getElementById('cliente-nombre');
     const apellidoInput = document.getElementById('cliente-apellido');
     
-    // 3. Rellenamos los campos y los hacemos de solo lectura.
     nombreInput.value = clienteNombre;
     nombreInput.readOnly = true;
     apellidoInput.value = clienteApellido;
     apellidoInput.readOnly = true;
-    // --> FIN DEL BLOQUE NUEVO
 
-    // URL base de nuestra API. Cambiar si es necesario.
+    // URL base de nuestra API
     const API_BASE_URL = 'http://localhost:8080/api';
 
-    // Obtenemos referencias a los elementos del formulario y la tabla
+    // Referencias a elementos del formulario y la tabla
     const sedeSelect = document.getElementById('sede');
     const barberoSelect = document.getElementById('barbero');
     const servicioSelect = document.getElementById('servicio');
@@ -37,18 +33,18 @@ document.addEventListener('DOMContentLoaded', function() {
     const submitButton = document.querySelector('#cita-form button[type="submit"]');
 
     // --- FUNCIÓN PARA CARGAR DATOS EN LOS SELECTS (MENÚS DESPLEGABLES) ---
-    // (Esta función no necesita cambios, se queda igual)
-    async function cargarSelects() {
+    // --> MODIFICADO: Ya no cargamos todos los barberos al inicio.
+    async function cargarSelectsIniciales() {
         try {
-            const [sedesRes, barberosRes, serviciosRes] = await Promise.all([
+            // Solo cargamos sedes y servicios al principio.
+            const [sedesRes, serviciosRes] = await Promise.all([
                 fetch(`${API_BASE_URL}/sedes`),
-                fetch(`${API_BASE_URL}/barberos`),
                 fetch(`${API_BASE_URL}/servicios`)
             ]);
             const sedes = await sedesRes.json();
-            const barberos = await barberosRes.json();
             const servicios = await serviciosRes.json();
 
+            // Llenado de sedes
             sedeSelect.innerHTML = '<option value="">Seleccione una sede</option>';
             sedes.forEach(sede => {
                 const option = document.createElement('option');
@@ -56,7 +52,44 @@ document.addEventListener('DOMContentLoaded', function() {
                 option.textContent = sede.nombreSede;
                 sedeSelect.appendChild(option);
             });
+            
+            // Llenado de servicios (con el formato mejorado que ya tenías)
+            servicioSelect.innerHTML = '<option value="">Seleccione un servicio</option>';
+            servicios.forEach(servicio => {
+                const option = document.createElement('option');
+                option.value = servicio.idServicio;
+                const precioFormateado = servicio.precio.toLocaleString('es-CO');
+                option.textContent = `${servicio.nombreServicio} - ${servicio.duracionMin} min - $${precioFormateado}`;
+                servicioSelect.appendChild(option);
+            });
+            
+            // --> NUEVO: Deshabilitamos el selector de barberos al inicio
+            barberoSelect.disabled = true;
+            barberoSelect.innerHTML = '<option value="">Primero seleccione una sede</option>';
 
+        } catch (error) {
+            console.error('Error cargando datos iniciales para los formularios:', error);
+        }
+    }
+
+    // --- NUEVA FUNCIÓN PARA CARGAR BARBEROS BASADO EN LA SEDE ---
+    async function cargarBarberosPorSede(idSede) {
+        // Si no se selecciona una sede, vaciamos y deshabilitamos el select de barberos
+        if (!idSede) {
+            barberoSelect.innerHTML = '<option value="">Primero seleccione una sede</option>';
+            barberoSelect.disabled = true;
+            return;
+        }
+
+        try {
+            // Hacemos la llamada al nuevo endpoint que creamos
+            const response = await fetch(`${API_BASE_URL}/barberos/por-sede/${idSede}`);
+            if (!response.ok) {
+                throw new Error('No se pudieron cargar los barberos para la sede seleccionada.');
+            }
+            const barberos = await response.json();
+
+            // Llenamos el select de barberos con los datos recibidos
             barberoSelect.innerHTML = '<option value="">Seleccione un barbero</option>';
             barberos.forEach(barbero => {
                 const option = document.createElement('option');
@@ -65,20 +98,17 @@ document.addEventListener('DOMContentLoaded', function() {
                 barberoSelect.appendChild(option);
             });
 
-            servicioSelect.innerHTML = '<option value="">Seleccione un servicio</option>';
-            servicios.forEach(servicio => {
-                const option = document.createElement('option');
-                option.value = servicio.idServicio;
-                option.textContent = `${servicio.nombreServicio} - $${servicio.precio}`;
-                servicioSelect.appendChild(option);
-            });
+            // Habilitamos el selector para que el usuario pueda elegir
+            barberoSelect.disabled = false;
+
         } catch (error) {
-            console.error('Error cargando datos para los formularios:', error);
+            console.error('Error al cargar barberos por sede:', error);
+            barberoSelect.innerHTML = '<option value="">Error al cargar barberos</option>';
+            barberoSelect.disabled = true;
         }
     }
-
-    // --- FUNCIÓN PARA CARGAR LA TABLA DE BARBEROS ---
-    // (Esta función no necesita cambios, se queda igual)
+    
+    // --- FUNCIÓN PARA CARGAR LA TABLA DE BARBEROS (sin cambios) ---
     async function cargarTablaBarberos() {
         try {
             const response = await fetch(`${API_BASE_URL}/barberos`);
@@ -104,8 +134,15 @@ document.addEventListener('DOMContentLoaded', function() {
             barberosTableBody.innerHTML = '<tr><td colspan="3">Error al cargar los datos.</td></tr>';
         }
     }
+    
+    // --- NUEVO EVENT LISTENER PARA EL CAMBIO DE SEDE ---
+    // Este es el "pegamento" que une todo.
+    sedeSelect.addEventListener('change', function() {
+        const idSedeSeleccionada = this.value; // Obtenemos el ID de la sede del <option>
+        cargarBarberosPorSede(idSedeSeleccionada);
+    });
 
-    // --- MANEJO DEL ENVÍO DEL FORMULARIO ---
+    // --- MANEJO DEL ENVÍO DEL FORMULARIO (sin cambios) ---
     citaForm.addEventListener('submit', async function(event) {
         event.preventDefault(); 
         submitButton.disabled = true;
@@ -113,12 +150,10 @@ document.addEventListener('DOMContentLoaded', function() {
         mensajeRespuesta.textContent = 'Agendando tu cita...';
         mensajeRespuesta.style.color = '#d4af37';
 
-        // Ahora los datos del cliente ya están en los campos del formulario
         const clienteData = {
             nombre: nombreInput.value,
             apellido: apellidoInput.value,
         };
-
         const nuevaCita = {
             fecha: document.getElementById('fecha').value,
             hora: document.getElementById('hora').value,
@@ -140,9 +175,11 @@ document.addEventListener('DOMContentLoaded', function() {
                 mensajeRespuesta.textContent = `¡Cita agendada con éxito para el ${citaCreada.fecha} a las ${citaCreada.hora}!`;
                 mensajeRespuesta.style.color = 'lightgreen';
                 citaForm.reset();
-                // Volvemos a poner los datos del cliente después de limpiar el form
                 nombreInput.value = clienteNombre;
                 apellidoInput.value = clienteApellido;
+                // --> MODIFICADO: Reseteamos el select de barberos
+                barberoSelect.innerHTML = '<option value="">Primero seleccione una sede</option>';
+                barberoSelect.disabled = true;
             } else {
                  const errorData = await response.json();
                  mensajeRespuesta.textContent = `Error: ${errorData.message || 'No se pudo agendar la cita.'}`;
@@ -159,6 +196,6 @@ document.addEventListener('DOMContentLoaded', function() {
     });
 
     // --- LLAMADAS INICIALES AL CARGAR LA PÁGINA ---
-    cargarSelects();
+    cargarSelectsIniciales(); // --> MODIFICADO: Llamamos a la nueva función
     cargarTablaBarberos();
 });

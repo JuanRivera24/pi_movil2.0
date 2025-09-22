@@ -1,5 +1,6 @@
 package com.kingdombarber.api.model;
 
+import jakarta.persistence.Column; // Asegúrate de tener este import
 import jakarta.persistence.Entity;
 import jakarta.persistence.GeneratedValue;
 import jakarta.persistence.GenerationType;
@@ -16,12 +17,13 @@ public class Barbero {
 
     @Id
     @GeneratedValue(strategy = GenerationType.IDENTITY)
+    @Column(name = "id_barbero") // Nombre de la columna
     private Long idBarbero;
 
     private String nombre;
     private String apellido;
 
-    @ManyToOne // Anotación clave: Muchos barberos pueden estar en UNA sede.
-    @JoinColumn(name = "id_sede") // Esto creará una columna "id_sede" en la tabla "barbero"
-    private Sede sede; // Objeto que representa la sede a la que pertenece
+    @ManyToOne
+    @JoinColumn(name = "id_sede")
+    private Sede sede;
 }
