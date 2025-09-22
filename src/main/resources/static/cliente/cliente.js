@@ -1,64 +1,46 @@
-// Usamos 'DOMContentLoaded' para asegurarnos de que el HTML esté completamente cargado
 document.addEventListener('DOMContentLoaded', function() {
     
-    // --- FUNCIÓN PRINCIPAL QUE CONTROLA TODA LA LÓGICA DE LA PÁGINA ---
     function inicializarPagina() {
-        
-        // Bloque de seguridad y carga de datos del cliente
         const clienteNombre = localStorage.getItem('clienteNombre');
         const clienteApellido = localStorage.getItem('clienteApellido');
         const userRole = localStorage.getItem('userRole');
 
         if (userRole !== 'cliente' || !clienteNombre || !clienteApellido) {
-            alert('Acceso no autorizado. Por favor, identifíquese como cliente.');
+            alert('Acceso no autorizado.');
             window.location.href = '/index.html';
             return;
         }
 
         const nombreInput = document.getElementById('cliente-nombre');
         const apellidoInput = document.getElementById('cliente-apellido');
-        
         nombreInput.value = clienteNombre;
-        nombreInput.readOnly = true;
         apellidoInput.value = clienteApellido;
-        apellidoInput.readOnly = true;
 
-        // URL base de nuestra API
         const API_BASE_URL = 'http://localhost:8080/api';
-
-        // Referencias a elementos del formulario y la tabla
         const sedeSelect = document.getElementById('sede');
         const barberoSelect = document.getElementById('barbero');
         const servicioSelect = document.getElementById('servicio');
-        const barberosTableBody = document.querySelector('#barberos-table tbody');
         const citaForm = document.getElementById('cita-form');
         const mensajeRespuesta = document.getElementById('mensaje-respuesta');
-        const submitButton = document.querySelector('#cita-form button[type="submit"]');
+        const submitButton = document.getElementById('submit-button');
+        const cancelEditButton = document.getElementById('cancel-edit-button');
+        const formTitle = document.getElementById('form-title');
+        const citaIdInput = document.getElementById('cita-id');
+        const misCitasTableBody = document.querySelector('#mis-citas-table tbody');
 
-        // --- FUNCIÓN PARA CARGAR DATOS EN LOS SELECTS (MENÚS DESPLEGABLES) ---
-        // *********************** ¡AQUÍ ESTÁ LA CORRECCIÓN FINAL! ***********************
+        // --- LÓGICA DE CARGA INICIAL ---
         async function cargarSelectsIniciales() {
-            sedeSelect.innerHTML = '<option value="">Cargando sedes...</option>';
-            servicioSelect.innerHTML = '<option value="">Cargando servicios...</option>';
-            barberoSelect.innerHTML = '<option value="">Primero seleccione una sede</option>';
-            barberoSelect.disabled = true;
-
-            try {
+            // (Esta función permanece igual a la última versión que corregimos)
+             try {
                 const [sedesRes, serviciosRes] = await Promise.all([
                     fetch(`${API_BASE_URL}/sedes`),
                     fetch(`${API_BASE_URL}/servicios`)
                 ]);
                 const sedesOriginal = await sedesRes.json();
                 const servicios = await serviciosRes.json();
-
-                // 1. ELIMINAR DUPLICADOS DEL LADO DEL CLIENTE (SEGUNDO BLINDAJE)
-                // Usamos un Map para garantizar sedes únicas basadas en su ID.
                 const sedesUnicas = [...new Map(sedesOriginal.map(sede => [sede.idSede, sede])).values()];
-                
-                // 2. CORTAR LA LISTA PARA OBTENER SOLO LAS PRIMERAS 6
                 const sedesFinales = sedesUnicas.slice(0, 6);
 
-                // 3. LLENAR EL SELECT CON LA LISTA FINAL Y LIMITADA
                 sedeSelect.innerHTML = '<option value="">Seleccione una sede</option>';
                 sedesFinales.forEach(sede => {
                     const option = document.createElement('option');
@@ -67,7 +49,6 @@ document.addEventListener('DOMContentLoaded', function() {
                     sedeSelect.appendChild(option);
                 });
                 
-                // El resto de la función sigue igual
                 servicioSelect.innerHTML = '<option value="">Seleccione un servicio</option>';
                 servicios.forEach(servicio => {
                     const option = document.createElement('option');
@@ -81,23 +62,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 barberoSelect.innerHTML = '<option value="">Primero seleccione una sede</option>';
 
             } catch (error) {
-                console.error('Error cargando datos iniciales para los formularios:', error);
-                sedeSelect.innerHTML = '<option value="">Error al cargar</option>';
-                servicioSelect.innerHTML = '<option value="">Error al cargar</option>';
+                console.error('Error cargando datos iniciales:', error);
             }
         }
-        // ************************************************************************************
 
-        // --- EL RESTO DE FUNCIONES (sin cambios) ---
         async function cargarBarberosPorSede(idSede) {
-            if (!idSede) {
+             if (!idSede) {
                 barberoSelect.innerHTML = '<option value="">Primero seleccione una sede</option>';
                 barberoSelect.disabled = true;
                 return;
             }
             try {
+                // Esta ruta '/barberos/por-sede/{idSede}' debe existir en tu BarberoController
                 const response = await fetch(`${API_BASE_URL}/barberos/por-sede/${idSede}`);
-                if (!response.ok) throw new Error('No se pudieron cargar los barberos.');
                 const barberos = await response.json();
                 barberoSelect.innerHTML = '<option value="">Seleccione un barbero</option>';
                 barberos.forEach(barbero => {
@@ -109,84 +86,155 @@ document.addEventListener('DOMContentLoaded', function() {
                 barberoSelect.disabled = false;
             } catch (error) {
                 console.error('Error al cargar barberos por sede:', error);
-                barberoSelect.innerHTML = '<option value="">Error al cargar</option>';
-                barberoSelect.disabled = true;
             }
         }
         
-        async function cargarTablaBarberos() {
+        sedeSelect.addEventListener('change', () => cargarBarberosPorSede(sedeSelect.value));
+
+        // --- NUEVA LÓGICA PARA GESTIONAR CITAS ---
+        async function cargarMisCitas() {
             try {
-                const response = await fetch(`${API_BASE_URL}/barberos`);
-                const barberos = await response.json();
-                barberosTableBody.innerHTML = ''; 
-                if (barberos.length === 0) {
-                    barberosTableBody.innerHTML = '<tr><td colspan="3">No hay barberos disponibles.</td></tr>';
+                const response = await fetch(`${API_BASE_URL}/citas?clienteNombre=${clienteNombre}&clienteApellido=${clienteApellido}`);
+                const citas = await response.json();
+                misCitasTableBody.innerHTML = '';
+
+                if (citas.length === 0) {
+                    misCitasTableBody.innerHTML = '<tr><td colspan="5" class="text-center">No tienes citas programadas.</td></tr>';
                     return;
                 }
-                barberos.forEach(barbero => {
+                
+                citas.sort((a, b) => new Date(a.fecha + 'T' + a.hora) - new Date(b.fecha + 'T' + b.hora));
+
+                citas.forEach(cita => {
                     const row = document.createElement('tr');
-                    row.innerHTML = `<td>${barbero.nombre}</td><td>${barbero.apellido}</td><td>${barbero.sede.nombreSede}</td>`;
-                    barberosTableBody.appendChild(row);
+                    const horaFormatted = new Date(`1970-01-01T${cita.hora}`).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', hour12: true });
+                    
+                    row.innerHTML = `
+                        <td>${cita.fecha}</td>
+                        <td>${horaFormatted}</td>
+                        <td>${cita.barbero.nombre} ${cita.barbero.apellido}</td>
+                        <td>${cita.servicio.nombreServicio}</td>
+                        <td class="acciones">
+                            <button class="btn-editar" data-id="${cita.idCita}">Editar</button>
+                            <button class="btn-eliminar" data-id="${cita.idCita}">Eliminar</button>
+                        </td>
+                    `;
+                    misCitasTableBody.appendChild(row);
                 });
             } catch (error) {
-                console.error('Error cargando la tabla de barberos:', error);
-                barberosTableBody.innerHTML = '<tr><td colspan="3">Error al cargar los datos.</td></tr>';
+                console.error("Error al cargar mis citas:", error);
+                misCitasTableBody.innerHTML = '<tr><td colspan="5" class="text-center">Error al cargar tus citas.</td></tr>';
             }
         }
-        
-        sedeSelect.addEventListener('change', function() {
-            cargarBarberosPorSede(this.value);
+
+        async function eliminarCita(id) {
+            if (!confirm('¿Estás seguro de que quieres eliminar esta cita?')) return;
+            
+            try {
+                const response = await fetch(`${API_BASE_URL}/citas/${id}`, { method: 'DELETE' });
+                if (response.ok) {
+                    mensajeRespuesta.textContent = 'Cita eliminada con éxito.';
+                    mensajeRespuesta.style.color = 'lightgreen';
+                    cargarMisCitas(); // Recargar la lista
+                } else {
+                    throw new Error('No se pudo eliminar la cita.');
+                }
+            } catch (error) {
+                mensajeRespuesta.textContent = `Error: ${error.message}`;
+                mensajeRespuesta.style.color = 'red';
+            }
+        }
+
+        async function modoEdicion(id) {
+            try {
+                const response = await fetch(`${API_BASE_URL}/citas/${id}`);
+                const cita = await response.json();
+
+                formTitle.textContent = 'Editando Cita';
+                citaIdInput.value = cita.idCita;
+                document.getElementById('fecha').value = cita.fecha;
+                document.getElementById('hora').value = cita.hora;
+                servicioSelect.value = cita.servicio.idServicio;
+                
+                sedeSelect.value = cita.sede.idSede;
+                await cargarBarberosPorSede(cita.sede.idSede); // Cargar barberos de la sede
+                barberoSelect.value = cita.barbero.idBarbero; // Seleccionar el barbero
+                
+                submitButton.textContent = 'Actualizar Cita';
+                cancelEditButton.style.display = 'block';
+                window.scrollTo(0, 0); // Subir al formulario
+            } catch (error) {
+                console.error("Error al cargar datos para edición:", error);
+            }
+        }
+
+        function cancelarEdicion() {
+            formTitle.textContent = 'Agendar una Cita';
+            citaForm.reset();
+            nombreInput.value = clienteNombre; // Restaurar nombre
+            apellidoInput.value = clienteApellido; // Restaurar apellido
+            citaIdInput.value = '';
+            submitButton.textContent = 'Agendar Cita';
+            cancelEditButton.style.display = 'none';
+        }
+
+        cancelEditButton.addEventListener('click', cancelarEdicion);
+        misCitasTableBody.addEventListener('click', function(event) {
+            if (event.target.classList.contains('btn-eliminar')) {
+                eliminarCita(event.target.dataset.id);
+            }
+            if (event.target.classList.contains('btn-editar')) {
+                modoEdicion(event.target.dataset.id);
+            }
         });
 
         citaForm.addEventListener('submit', async function(event) {
-            event.preventDefault(); 
-            submitButton.disabled = true;
-            submitButton.textContent = 'Agendando...';
-            mensajeRespuesta.textContent = 'Agendando tu cita...';
-            mensajeRespuesta.style.color = '#d4af37';
-            const nuevaCita = {
+            event.preventDefault();
+            const id = citaIdInput.value;
+            const esEdicion = id !== '';
+            
+            const citaData = {
                 fecha: document.getElementById('fecha').value,
                 hora: document.getElementById('hora').value,
-                cliente: { nombre: nombreInput.value, apellido: apellidoInput.value },
+                cliente: { nombre: clienteNombre, apellido: clienteApellido },
                 sede: { idSede: sedeSelect.value },
                 barbero: { idBarbero: barberoSelect.value },
                 servicio: { idServicio: servicioSelect.value }
             };
+
+            const url = esEdicion ? `${API_BASE_URL}/citas/${id}` : `${API_BASE_URL}/citas`;
+            const method = esEdicion ? 'PUT' : 'POST';
+
             try {
-                const response = await fetch(`${API_BASE_URL}/citas`, {
-                    method: 'POST',
+                const response = await fetch(url, {
+                    method: method,
                     headers: { 'Content-Type': 'application/json' },
-                    body: JSON.stringify(nuevaCita),
+                    body: JSON.stringify(citaData)
                 });
-                if (response.status === 201) {
-                    const citaCreada = await response.json();
-                    mensajeRespuesta.textContent = `¡Cita agendada con éxito para el ${citaCreada.fecha} a las ${citaCreada.hora}!`;
+
+                if (response.ok) {
+                    mensajeRespuesta.textContent = `Cita ${esEdicion ? 'actualizada' : 'agendada'} con éxito.`;
                     mensajeRespuesta.style.color = 'lightgreen';
-                    citaForm.reset();
-                    nombreInput.value = clienteNombre;
-                    apellidoInput.value = clienteApellido;
-                    barberoSelect.innerHTML = '<option value="">Primero seleccione una sede</option>';
-                    barberoSelect.disabled = true;
+                    cancelarEdicion();
+                    cargarMisCitas();
                 } else {
-                     const errorData = await response.json();
-                     mensajeRespuesta.textContent = `Error: ${errorData.message || 'No se pudo agendar la cita.'}`;
-                     mensajeRespuesta.style.color = 'red';
+                    const error = await response.json();
+                    throw new Error(error.message || `No se pudo ${esEdicion ? 'actualizar' : 'agendar'} la cita.`);
                 }
             } catch (error) {
-                console.error('Error al crear la cita:', error);
-                mensajeRespuesta.textContent = 'Hubo un error de conexión al agendar la cita.';
+                mensajeRespuesta.textContent = `Error: ${error.message}`;
                 mensajeRespuesta.style.color = 'red';
-            } finally {
-                submitButton.disabled = false;
-                submitButton.textContent = 'Agendar Cita';
             }
         });
 
         // --- LLAMADAS INICIALES ---
-        cargarSelectsIniciales();
-        cargarTablaBarberos();
+        inicializarPagina();
+        function inicializarPagina() {
+            cargarSelectsIniciales();
+            cargarMisCitas();
+            // cargarTablaBarberos(); // Puedes decidir si aún necesitas esta tabla
+        }
     }
 
-    // --- PUNTO DE ENTRADA ÚNICO ---
     inicializarPagina();
 });

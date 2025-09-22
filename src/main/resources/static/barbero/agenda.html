@@ -5,13 +5,17 @@
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda de Citas - Kingdom Barber</title>
     <link rel="stylesheet" href="/css/style.css">
-    <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <h1>Agenda de Citas</h1>
+        <!-- NUEVO: Selector para que el barbero elija su nombre -->
+        <div class="form-group">
+            <label for="barbero-selector">Selecciona tu nombre para ver tu agenda:</label>
+            <select id="barbero-selector" required><option value="">Cargando barberos...</option></select>
+        </div>
+
         <div class="table-wrapper">
             <table id="citas-table">
                 <thead>
@@ -20,12 +24,12 @@
                         <th>Hora</th>
                         <th>Cliente</th>
                         <th>Servicio</th>
-                        <th>Barbero Asignado</th>
                         <th>Sede</th>
+                        <th>Acciones</th> <!-- Columna añadida -->
                     </tr>
                 </thead>
                 <tbody>
-                    <tr><td colspan="6" class="text-center">Cargando citas...</td></tr>
+                    <tr><td colspan="6" class="text-center">Selecciona un barbero para ver las citas...</td></tr>
                 </tbody>
             </table>
         </div>
