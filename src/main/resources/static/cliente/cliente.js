@@ -12,6 +12,9 @@ document.addEventListener('DOMContentLoaded', function() {
     const barberosTableBody = document.querySelector('#barberos-table tbody');
     const citaForm = document.getElementById('cita-form');
     const mensajeRespuesta = document.getElementById('mensaje-respuesta');
+    
+    // --> ¡NUEVO! Obtenemos una referencia al botón de envío del formulario.
+    const submitButton = document.querySelector('#cita-form button[type="submit"]');
 
     // --- FUNCIÓN PARA CARGAR DATOS EN LOS SELECTS (MENÚS DESPLEGABLES) ---
     async function cargarSelects() {
@@ -93,6 +96,10 @@ document.addEventListener('DOMContentLoaded', function() {
     citaForm.addEventListener('submit', async function(event) {
         event.preventDefault(); // Evita que la página se recargue al enviar el formulario
 
+        // --> ¡MEJORA UX! Deshabilitamos el botón para evitar envíos duplicados.
+        submitButton.disabled = true;
+        submitButton.textContent = 'Agendando...';
+
         // Mostramos un mensaje de espera
         mensajeRespuesta.textContent = 'Agendando tu cita...';
         mensajeRespuesta.style.color = '#d4af37';
@@ -102,7 +109,6 @@ document.addEventListener('DOMContentLoaded', function() {
         const clienteData = {
             nombre: document.getElementById('cliente-nombre').value,
             apellido: document.getElementById('cliente-apellido').value,
-            // Podríamos añadir teléfono y email si quisiéramos
         };
 
         // Construimos el objeto CITA que nuestra API espera recibir
@@ -130,13 +136,19 @@ document.addEventListener('DOMContentLoaded', function() {
                 mensajeRespuesta.style.color = 'lightgreen';
                 citaForm.reset(); // Limpia el formulario
             } else {
-                throw new Error('El servidor respondió con un error.');
+                 const errorData = await response.json(); // Intentamos leer el error del backend
+                 mensajeRespuesta.textContent = `Error: ${errorData.message || 'No se pudo agendar la cita.'}`;
+                 mensajeRespuesta.style.color = 'red';
             }
 
         } catch (error) {
             console.error('Error al crear la cita:', error);
-            mensajeRespuesta.textContent = 'Hubo un error al agendar la cita. Por favor, inténtalo de nuevo.';
+            mensajeRespuesta.textContent = 'Hubo un error de conexión al agendar la cita. Por favor, inténtalo de nuevo.';
             mensajeRespuesta.style.color = 'red';
+        } finally {
+             // --> ¡MEJORA UX! Volvemos a habilitar el botón, haya funcionado o no.
+            submitButton.disabled = false;
+            submitButton.textContent = 'Agendar Cita';
         }
     });
 
