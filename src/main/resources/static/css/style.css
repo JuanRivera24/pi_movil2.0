@@ -199,3 +199,66 @@ tbody tr:hover {
 /* --- 9. Clases de Utilidad --- */
 .mensaje-respuesta { text-align: center; margin-top: 20px; font-weight: bold; }
 .text-center { text-align: center; }
+
+/* --- 10. ESTILOS ADICIONALES PARA PÁGINA DE DETALLES (Añadir al final) --- */
+
+/* Grid principal para las tarjetas de detalle */
+.details-main-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(350px, 1fr)); /* Columnas responsivas */
+    gap: 25px;
+    margin-top: 30px;
+}
+
+/* Estilo de cada tarjeta/sección (Cita, Cliente, etc.) */
+.detail-card {
+    background-color: var(--color-fondo-oscuro);
+    padding: 25px;
+    border-radius: 10px;
+    border-top: 3px solid var(--color-primario);
+}
+
+.detail-card h3 {
+    margin-top: 0;
+    margin-bottom: 20px;
+    padding-bottom: 10px;
+    border-bottom: 1px solid var(--color-borde);
+    color: var(--color-texto-principal);
+    font-family: var(--fuente-cuerpo); /* Usamos la fuente de cuerpo para que no sea tan dramática */
+    font-size: 1.2em;
+    font-weight: bold;
+    display: flex;
+    align-items: center;
+}
+
+/* Iconos en los títulos de las tarjetas */
+.detail-card .icon {
+    color: var(--color-primario);
+    margin-right: 12px;
+    font-size: 1.1em;
+}
+
+
+/* Ajustes al grid interno de cada tarjeta para mejor alineación */
+.detail-grid {
+    display: grid;
+    grid-template-columns: max-content 1fr; /* Columna de label se ajusta al texto */
+    gap: 12px 15px; /* Menos espacio vertical, más horizontal */
+    align-items: center;
+}
+
+.detail-label {
+    font-weight: bold;
+    color: var(--color-texto-secundario);
+    text-align: right; /* Alineado a la derecha como antes */
+}
+
+.detail-value {
+    background-color: var(--color-fondo-secundario); /* Color de fondo invertido para contraste */
+    padding: 10px 15px;
+    border-radius: 6px;
+    border-left: none; /* Quitamos el borde izquierdo que ya no es necesario */
+    white-space: nowrap; /* Evita que el texto se parta en dos líneas si es corto */
+    overflow: hidden;
+    text-overflow: ellipsis; /* Añade ... si el texto es muy largo */
+}

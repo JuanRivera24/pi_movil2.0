@@ -121,8 +121,9 @@ document.addEventListener("DOMContentLoaded", function () {
 
         // Añadimos el evento de clic a toda la fila
         row.addEventListener("click", () => {
-          // Al hacer clic, redirigimos la ventana del navegador a la página de detalles
-          window.location.href = `/barbero/detalles-cita.html?id=${cita.id}`;
+          // *** AQUÍ ESTÁ LA CORRECCIÓN ***
+          // El archivo se llama 'detalle-cita.html' (sin la 's' final en 'detalles')
+          window.location.href = `/barbero/detalle-cita.html?id=${cita.idCita}`;
         });
         row.innerHTML = `
                     <td>${cita.fecha}</td>
