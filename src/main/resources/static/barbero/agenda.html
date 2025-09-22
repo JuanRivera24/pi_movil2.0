@@ -4,60 +4,32 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Agenda de Citas - Kingdom Barber</title>
-    <!-- Reutilizamos los mismos estilos -->
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        /* Estilos específicos para esta página */
-        .container {
-            width: 90%;
-            max-width: 1200px;
-            margin: 20px auto;
-            background-color: #1e1e1e;
-            padding: 20px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-        }
-        table {
-            width: 100%;
-            border-collapse: collapse;
-            margin-top: 20px;
-        }
-        th, td {
-            padding: 12px;
-            text-align: left;
-            border-bottom: 1px solid #444;
-        }
-        th {
-            background-color: #333;
-            color: #d4af37;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <div class="container">
-        <h1>Agenda de Citas Programadas</h1>
-        <table id="citas-table">
-            <thead>
-                <tr>
-                    <th>Fecha</th>
-                    <th>Hora</th>
-                    <th>Cliente</th>
-                    <th>Servicio</th>
-                    <th>Barbero Asignado</th>
-                    <th>Sede</th>
-                </tr>
-            </thead>
-            <tbody>
-                <!-- Las filas de citas se insertarán aquí con JavaScript -->
-                <tr>
-                    <td colspan="6" style="text-align: center;">Cargando citas...</td>
-                </tr>
-            </tbody>
-        </table>
+        <h1>Agenda de Citas</h1>
+        <div class="table-wrapper">
+            <table id="citas-table">
+                <thead>
+                    <tr>
+                        <th>Fecha</th>
+                        <th>Hora</th>
+                        <th>Cliente</th>
+                        <th>Servicio</th>
+                        <th>Barbero Asignado</th>
+                        <th>Sede</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <tr><td colspan="6" class="text-center">Cargando citas...</td></tr>
+                </tbody>
+            </table>
+        </div>
     </div>
-
-    <!-- Enlazamos el script del barbero -->
     <script src="/barbero/barbero.js"></script>
 </body>
 </html>

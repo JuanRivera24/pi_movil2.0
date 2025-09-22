@@ -1,148 +1,201 @@
-/* Estilos generales */
+/* === KINGDOM BARBER - REDISEÑO PROFESIONAL === */
+
+/* --- 1. Variables de Color y Fuentes --- */
+:root {
+    --color-fondo-oscuro: #121826; /* Un azul casi negro */
+    --color-fondo-secundario: #1D283A; /* Azul oscuro para contenedores */
+    --color-primario: #3B82F6;         /* Azul brillante para acentos y botones */
+    --color-primario-hover: #2563EB; /* Azul más oscuro para hover */
+    --color-texto-principal: #E5E7EB;   /* Un gris muy claro, fácil de leer */
+    --color-texto-secundario: #9CA3AF; /* Gris para texto menos importante */
+    --color-borde: #374151;           /* Gris azulado para bordes */
+
+    --fuente-titulos: 'Cinzel', serif; /* Manteniendo la fuente temática */
+    --fuente-cuerpo: 'Raleway', sans-serif;
+}
+
+/* --- 2. Estilos Globales y Reset --- */
+*, *::before, *::after {
+    box-sizing: border-box;
+}
+
 body {
-    font-family: Arial, sans-serif;
-    background-color: #121212;
-    color: #e0e0e0;
-    display: flex;
-    justify-content: center;
-    align-items: center;
-    height: 100vh;
+    font-family: var(--fuente-cuerpo);
+    background-color: var(--color-fondo-oscuro);
+    color: var(--color-texto-principal);
     margin: 0;
+    line-height: 1.6;
 }
 
-/* Contenedor principal de la página de selección */
-.selection-container {
+/* --- 3. Tipografía y Encabezados --- */
+h1, h2, h3 {
+    font-family: var(--fuente-titulos);
+    color: var(--color-primario);
+    margin-top: 0;
+}
+
+h1 { font-size: 2.5em; letter-spacing: 1px; text-align: center; }
+h2 { font-size: 2em; border-bottom: 2px solid var(--color-borde); padding-bottom: 10px; margin-bottom: 20px;}
+h3 { font-size: 1.5em; }
+p { color: var(--color-texto-secundario); }
+
+/* --- 4. Contenedor Principal (Layout) --- */
+.container {
+    width: 90%;
+    max-width: 1200px;
+    margin: 40px auto;
+    background-color: var(--color-fondo-secundario);
+    padding: 30px 40px;
+    border-radius: 12px;
+    box-shadow: 0 10px 30px rgba(0, 0, 0, 0.4);
+}
+
+/* --- 5. Componentes Reutilizables: Botones y Formularios --- */
+/* Botones */
+.btn {
+    display: inline-block;
+    text-decoration: none;
+    background-color: var(--color-primario);
+    color: #FFF;
+    padding: 12px 25px;
+    border-radius: 8px;
+    font-size: 1.1em;
+    font-weight: bold;
+    border: none;
+    cursor: pointer;
+    transition: background-color 0.3s, transform 0.2s;
     text-align: center;
-    background-color: #1e1e1e;
-    padding: 40px;
-    border-radius: 10px;
-    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
 }
 
-h1 {
-    color: #d4af37; /* Un tono dorado */
-    margin-bottom: 20px;
+.btn:hover, .role-button:hover {
+    background-color: var(--color-primario-hover);
+    transform: translateY(-3px);
+}
+.btn[disabled] {
+    background-color: #555;
+    cursor: not-allowed;
+    transform: none;
+}
+.btn-block {
+    grid-column: 1 / -1; /* Ocupa todo el ancho en un grid */
+    width: 100%;
 }
 
-/* Grupo de botones */
-.button-group {
-    margin-top: 30px;
+/* Formularios */
+.form-grid {
+    display: grid;
+    grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+    gap: 25px;
+}
+.form-group {
     display: flex;
-    gap: 20px;
-    justify-content: center;
+    flex-direction: column;
+}
+.form-group label {
+    margin-bottom: 8px;
+    font-weight: bold;
+    color: var(--color-texto-secundario);
+}
+.form-group input, .form-group select {
+    padding: 12px;
+    border-radius: 8px;
+    border: 1px solid var(--color-borde);
+    background-color: var(--color-fondo-oscuro);
+    color: var(--color-texto-principal);
+    font-size: 1em;
+    font-family: var(--fuente-cuerpo);
+}
+input[readonly] {
+    background-color: #2a3649;
+    cursor: not-allowed;
 }
 
-/* Estilo de los botones/enlaces */
+/* --- 6. Componentes Específicos: Tablas y Detalles --- */
+/* Tablas */
+.table-wrapper {
+    overflow-x: auto; /* Para responsividad en móviles */
+}
+table {
+    width: 100%;
+    border-collapse: collapse;
+    margin-top: 20px;
+}
+th, td {
+    padding: 15px;
+    text-align: left;
+    border-bottom: 1px solid var(--color-borde);
+}
+thead th {
+    background-color: #162030;
+    color: var(--color-primario);
+    font-family: var(--fuente-titulos);
+    font-size: 1.1em;
+}
+tbody tr {
+    transition: background-color 0.2s;
+}
+tbody tr:hover {
+    background-color: #2a3649;
+}
+
+/* Vista de Detalles de Cita */
+.detail-grid {
+    display: grid;
+    grid-template-columns: 150px 1fr;
+    gap: 15px 20px;
+    align-items: center;
+}
+.detail-label {
+    font-weight: bold;
+    color: var(--color-texto-secundario);
+    text-align: right;
+}
+.detail-value {
+    background-color: var(--color-fondo-oscuro);
+    padding: 12px;
+    border-radius: 8px;
+    border-left: 3px solid var(--color-primario);
+}
+
+/* --- 7. Estilos de la Página de Inicio (Login) --- */
+.selection-container { text-align: center; }
+.selection-container p { font-size: 1.2em; }
+.button-group { margin-top: 30px; display: flex; gap: 20px; justify-content: center; }
 .role-button {
     text-decoration: none;
-    color: #121212;
-    background-color: #d4af37;
+    background-color: var(--color-fondo-secundario);
+    color: var(--color-primario);
     padding: 15px 30px;
-    border-radius: 5px;
+    border-radius: 8px;
     font-size: 1.1em;
     font-weight: bold;
     transition: background-color 0.3s, transform 0.2s;
-    /* --> AÑADIDO: Para que el <button> se parezca al <a> */
-    border: none; 
+    border: 2px solid var(--color-primario);
     cursor: pointer;
-    font-family: Arial, sans-serif; /* Heredar la fuente */
+    font-family: var(--fuente-titulos);
 }
 
-.role-button:hover {
-    background-color: #b89a30; /* Un dorado más oscuro */
-    transform: translateY(-2px);
-}
-
-/* --- ESTILOS PARA EL MODAL DE LOGIN (NUEVOS) --- */
-.modal-oculto {
-    display: none;
-}
-
+/* --- 8. Estilos del Modal --- */
+.modal-oculto { display: none; }
 .modal-visible {
-    display: flex; /* Usamos flex para centrar el contenido */
-    position: fixed; /* Se queda fijo en la pantalla */
-    z-index: 1000; /* Se asegura de que esté por encima de todo */
-    left: 0;
-    top: 0;
-    width: 100%;
-    height: 100%;
-    overflow: auto;
-    background-color: rgba(0,0,0,0.6); /* Fondo semi-transparente */
-    justify-content: center;
-    align-items: center;
+    display: flex; position: fixed; z-index: 1000;
+    left: 0; top: 0; width: 100%; height: 100%;
+    background-color: rgba(0,0,0,0.7);
+    justify-content: center; align-items: center;
 }
-
 .modal-contenido {
-    background-color: #2c2c2c;
-    margin: auto;
-    padding: 30px;
-    border: 1px solid #888;
-    width: 80%;
-    max-width: 400px;
-    border-radius: 8px;
-    position: relative;
-    box-shadow: 0 4px 8px rgba(0,0,0,0.2);
-    color: #e0e0e0; /* Aseguramos el color del texto dentro del modal */
+    background-color: var(--color-fondo-secundario);
+    padding: 30px; border-radius: 12px;
+    width: 90%; max-width: 400px;
+    position: relative; box-shadow: 0 4px 8px rgba(0,0,0,0.2);
 }
-
-.modal-contenido h3 {
-    color: #d4af37;
-    text-align: center;
-}
-
-.modal-contenido .form-group {
-    margin-bottom: 15px;
-}
-
-.modal-contenido label {
-    display: block;
-    margin-bottom: 5px;
-}
-
-.modal-contenido input[type="text"] {
-    width: 100%;
-    padding: 8px;
-    box-sizing: border-box; /* Importante para que el padding no desborde */
-    border-radius: 4px;
-    border: 1px solid #555;
-    background-color: #333;
-    color: #e0e0e0;
-}
-
-.modal-contenido button[type="submit"] {
-    width: 100%;
-    padding: 10px;
-    border: none;
-    border-radius: 5px;
-    background-color: #d4af37;
-    color: #121212;
-    font-weight: bold;
-    cursor: pointer;
-    transition: background-color 0.3s;
-}
-
-.modal-contenido button[type="submit"]:hover {
-    background-color: #b89a30;
-}
-
 .modal-cerrar {
-    color: #aaa;
-    position: absolute;
-    top: 10px;
-    right: 20px;
-    font-size: 28px;
-    font-weight: bold;
+    color: #aaa; position: absolute; top: 10px; right: 20px;
+    font-size: 28px; font-weight: bold; cursor: pointer;
+    transition: color 0.2s;
 }
+.modal-cerrar:hover, .modal-cerrar:focus { color: var(--color-primario); }
 
-.modal-cerrar:hover,
-.modal-cerrar:focus {
-    color: #d4af37;
-    text-decoration: none;
-    cursor: pointer;
-}
-
-.mensaje-respuesta {
-    text-align: center;
-    margin-top: 15px;
-    font-weight: bold;
-}
+/* --- 9. Clases de Utilidad --- */
+.mensaje-respuesta { text-align: center; margin-top: 20px; font-weight: bold; }
+.text-center { text-align: center; }

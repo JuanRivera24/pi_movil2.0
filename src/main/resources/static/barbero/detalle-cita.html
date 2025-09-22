@@ -4,101 +4,35 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Detalle de la Cita - Kingdom Barber</title>
-    <!-- Reutilizamos los mismos estilos -->
     <link rel="stylesheet" href="/css/style.css">
-    <style>
-        .container {
-            width: 90%;
-            max-width: 800px;
-            margin: 20px auto;
-            background-color: #1e1e1e;
-            padding: 30px;
-            border-radius: 8px;
-            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
-        }
-        .detail-grid {
-            display: grid;
-            grid-template-columns: 1fr 2fr;
-            gap: 15px;
-            align-items: center;
-        }
-        .detail-label {
-            font-weight: bold;
-            color: #d4af37;
-            text-align: right;
-        }
-        .detail-value {
-            background-color: #333;
-            padding: 10px;
-            border-radius: 5px;
-        }
-        #loading-message, #error-message {
-            text-align: center;
-            font-size: 1.2em;
-            padding: 20px;
-        }
-        .back-button {
-            display: inline-block;
-            margin-top: 30px;
-            padding: 10px 20px;
-            background-color: #d4af37;
-            color: #121212;
-            text-decoration: none;
-            border-radius: 5px;
-            font-weight: bold;
-        }
-    </style>
+    <link rel="preconnect" href="https://fonts.googleapis.com">
+    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
-
     <div class="container">
         <h1>Detalles de la Cita</h1>
         
-        <!-- Mensaje de carga inicial -->
-        <div id="loading-message">Cargando detalles de la cita...</div>
-        
-        <!-- Mensaje en caso de error -->
+        <div id="loading-message" class="text-center">Cargando detalles...</div>
         <div id="error-message" style="display: none;"></div>
 
-        <!-- Contenedor para los detalles (inicialmente oculto) -->
         <div id="cita-details-container" style="display: none;">
             <div class="detail-grid">
-                <span class="detail-label">Fecha:</span>
-                <span id="fecha" class="detail-value"></span>
-
-                <span class="detail-label">Hora:</span>
-                <span id="hora" class="detail-value"></span>
-
-                <span class="detail-label">Cliente:</span>
-                <span id="cliente" class="detail-value"></span>
-
-                <span class="detail-label">Teléfono Cliente:</span>
-                <span id="cliente-telefono" class="detail-value"></span>
-                
-                <span class="detail-label">Email Cliente:</span>
-                <span id="cliente-email" class="detail-value"></span>
-
-                <span class="detail-label">Servicio:</span>
-                <span id="servicio" class="detail-value"></span>
-
-                <span class="detail-label">Duración:</span>
-                <span id="duracion" class="detail-value"></span>
-
-                <span class="detail-label">Precio:</span>
-                <span id="precio" class="detail-value"></span>
-                
-                <span class="detail-label">Barbero Asignado:</span>
-                <span id="barbero" class="detail-value"></span>
-
-                <span class="detail-label">Sede:</span>
-                <span id="sede" class="detail-value"></span>
+                <span class="detail-label">Fecha:</span><span id="fecha" class="detail-value"></span>
+                <span class="detail-label">Hora:</span><span id="hora" class="detail-value"></span>
+                <span class="detail-label">Cliente:</span><span id="cliente" class="detail-value"></span>
+                <span class="detail-label">Teléfono:</span><span id="cliente-telefono" class="detail-value"></span>
+                <span class="detail-label">Email:</span><span id="cliente-email" class="detail-value"></span>
+                <span class="detail-label">Servicio:</span><span id="servicio" class="detail-value"></span>
+                <span class="detail-label">Duración:</span><span id="duracion" class="detail-value"></span>
+                <span class="detail-label">Precio:</span><span id="precio" class="detail-value"></span>
+                <span class="detail-label">Barbero:</span><span id="barbero" class="detail-value"></span>
+                <span class="detail-label">Sede:</span><span id="sede" class="detail-value"></span>
             </div>
         </div>
         
-        <a href="/barbero/agenda.html" class="back-button">Volver a la Agenda</a>
+        <a href="/barbero/agenda.html" class="btn" style="margin-top: 30px;">Volver a la Agenda</a>
     </div>
-
-    <!-- Enlazamos el nuevo script -->
     <script src="/barbero/detalle-cita.js"></script>
 </body>
 </html>
