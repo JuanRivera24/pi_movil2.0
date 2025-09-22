@@ -32,18 +32,27 @@ document.addEventListener("DOMContentLoaded", function () {
 
       const sedesOriginal = await sedesRes.json();
       todosLosBarberos = await barberosRes.json();
-
+      
+      // --- *** AQUÍ ESTÁ LA NUEVA LÓGICA *** ---
+      // 1. Usamos el Map para asegurar que solo tenemos sedes únicas.
       const sedesUnicas = [
         ...new Map(sedesOriginal.map((sede) => [sede.idSede, sede])).values(),
       ];
 
+      // 2. Usamos .slice(0, 6) para tomar solo los primeros 6 elementos del array de sedes únicas.
+      const primerasSeisSedes = sedesUnicas.slice(0, 6);
+
+      // Limpiamos el selector y añadimos la opción por defecto
       sedeSelector.innerHTML = '<option value="">Seleccione una sede</option>';
-      sedesUnicas.forEach((sede) => {
+      
+      // Llenamos el selector solo con esas 6 sedes
+      primerasSeisSedes.forEach((sede) => {
         const option = document.createElement("option");
         option.value = sede.idSede;
         option.textContent = sede.nombreSede;
         sedeSelector.appendChild(option);
       });
+
     } catch (error) {
       console.error("Error cargando datos iniciales:", error);
       sedeSelector.innerHTML = '<option value="">Error al cargar</option>';
@@ -116,13 +125,8 @@ document.addEventListener("DOMContentLoaded", function () {
           hour12: true,
         });
 
-        // Hacemos que la fila sea "clicable"
         row.style.cursor = "pointer";
-
-        // Añadimos el evento de clic a toda la fila
         row.addEventListener("click", () => {
-          // *** AQUÍ ESTÁ LA CORRECCIÓN ***
-          // El archivo se llama 'detalle-cita.html' (sin la 's' final en 'detalles')
           window.location.href = `/barbero/detalle-cita.html?id=${cita.idCita}`;
         });
         row.innerHTML = `
@@ -136,11 +140,10 @@ document.addEventListener("DOMContentLoaded", function () {
                     </td>
                 `;
 
-        // Evento para el botón "Cancelar" para que no interfiera con el click de la fila
         const cancelarBtn = row.querySelector(".btn-eliminar");
         if (cancelarBtn) {
           cancelarBtn.addEventListener("click", function (event) {
-            event.stopPropagation(); // MUY IMPORTANTE: evita que el click se propague a la fila
+            event.stopPropagation();
             eliminarCita(this.dataset.id);
           });
         }
@@ -164,7 +167,7 @@ document.addEventListener("DOMContentLoaded", function () {
       });
       if (response.ok) {
         alert("Cita cancelada con éxito.");
-        cargarCitasPorBarbero(barberoSelector.value); // Recarga la agenda
+        cargarCitasPorBarbero(barberoSelector.value);
       } else {
         throw new Error("No se pudo cancelar la cita.");
       }
