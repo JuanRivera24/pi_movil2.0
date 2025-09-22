@@ -1,5 +1,16 @@
 document.addEventListener('DOMContentLoaded', function() {
 
+    // --> ¡NUEVO! Bloque de seguridad
+    const userRole = localStorage.getItem('userRole');
+
+    // 1. Verificamos si el usuario es un barbero. Si no, lo redirigimos al inicio.
+    if (userRole !== 'barbero') {
+        alert('Acceso denegado. Esta página es solo para personal autorizado.');
+        window.location.href = '/index.html'; // Lo mandamos a la página de login
+        return; // Detenemos la ejecución del resto del script
+    }
+    // --> FIN DEL BLOQUE NUEVO
+
     const API_BASE_URL = 'http://localhost:8080/api';
     const citasTableBody = document.querySelector('#citas-table tbody');
 
@@ -11,32 +22,24 @@ document.addEventListener('DOMContentLoaded', function() {
             }
             const citas = await response.json();
 
-            citasTableBody.innerHTML = ''; // Limpiamos la tabla
+            citasTableBody.innerHTML = ''; 
 
             if (citas.length === 0) {
                 citasTableBody.innerHTML = '<tr><td colspan="6" style="text-align: center;">No hay citas agendadas por el momento.</td></tr>';
                 return;
             }
 
+            // Ordenamos las citas por fecha y hora
             citas.sort((a, b) => new Date(a.fecha + 'T' + a.hora) - new Date(b.fecha + 'T' + b.hora));
 
             citas.forEach(cita => {
                 const row = document.createElement('tr');
-
-                // --- INICIO DE LA MODIFICACIÓN ---
-
-                // 1. Añadimos un estilo para que el cursor cambie a una "manito" al pasar por encima.
                 row.style.cursor = 'pointer';
-
-                // 2. Añadimos un evento 'click' a toda la fila.
                 row.addEventListener('click', function() {
-                    // 3. Redirigimos al usuario a la nueva página de detalles.
-                    //    Pasamos el ID de la cita como un "parámetro de búsqueda" en la URL.
                     window.location.href = `/barbero/detalle-cita.html?id=${cita.idCita}`;
                 });
-
-                // --- FIN DE LA MODIFICACIÓN ---
-
+                
+                // Formateamos la hora para mejor visualización
                 const horaFormatted = new Date(`1970-01-01T${cita.hora}`).toLocaleTimeString('es-CO', { hour: '2-digit', minute: '2-digit', hour12: true });
 
                 row.innerHTML = `

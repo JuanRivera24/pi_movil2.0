@@ -4,16 +4,40 @@
     <meta charset="UTF-8">
     <meta name="viewport" content="width=device-width, initial-scale=1.0">
     <title>Bienvenido a Kingdom Barber</title>
-    <link rel="stylesheet" href="/css/style.css">
+    <!-- Ruta corregida al CSS -->
+    <link rel="stylesheet" href="/css/style.css"> 
 </head>
 <body>
     <div class="selection-container">
         <h1>Bienvenido a Kingdom Barber</h1>
         <p>Por favor, selecciona tu rol para continuar:</p>
         <div class="button-group">
-            <a href="/cliente/citas.html" class="role-button">Soy Cliente</a>
-            <a href="/barbero/agenda.html" class="role-button">Soy Barbero</a>
+            <button id="btn-cliente" class="role-button">Soy Cliente</button>
+            <button id="btn-barbero" class="role-button">Soy Barbero</button>
         </div>
     </div>
+
+    <!-- Modal para el login del cliente (inicialmente oculto) -->
+    <div id="cliente-login-modal" class="modal-oculto">
+        <div class="modal-contenido">
+            <span class="modal-cerrar">&times;</span>
+            <h3>Identificación del Cliente</h3>
+            <form id="cliente-login-form">
+                <div class="form-group">
+                    <label for="login-nombre">Nombre:</label>
+                    <input type="text" id="login-nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="login-apellido">Apellido:</label>
+                    <input type="text" id="login-apellido" required>
+                </div>
+                <button type="submit">Continuar</button>
+                <p id="login-mensaje" class="mensaje-respuesta"></p>
+            </form>
+        </div>
+    </div>
+
+    <!-- Ruta corregida al JS. El script estará junto al index.html -->
+    <script src="login.js"></script>
 </body>
 </html>
