@@ -6,33 +6,41 @@
     <title>Detalle de la Cita - Kingdom Barber</title>
     <link rel="stylesheet" href="/css/style.css">
     <link rel="preconnect" href="https://fonts.googleapis.com">
-    <link rel="preconnect" href="https://fonts.gstatic" crossorigin>
+    <link rel="preconnect" href="https://fonts.gstatic.com" crossorigin>
     <link href="https://fonts.googleapis.com/css2?family=Cinzel:wght@700&family=Raleway:wght@400;700&display=swap" rel="stylesheet">
 </head>
 <body>
     <div class="container">
         <h1>Detalles de la Cita</h1>
         
+        <!-- Mensajes de estado -->
         <div id="loading-message" class="text-center">Cargando detalles...</div>
-        <div id="error-message" style="display: none;"></div>
+        <div id="error-message" class="mensaje-respuesta" style="display: none; color: red;"></div>
 
+        <!-- Contenedor principal de los detalles (inicialmente oculto) -->
         <div id="cita-details-container" style="display: none;">
             <div class="detail-grid">
                 <span class="detail-label">Fecha:</span><span id="fecha" class="detail-value"></span>
                 <span class="detail-label">Hora:</span><span id="hora" class="detail-value"></span>
+                <hr>
                 <span class="detail-label">Cliente:</span><span id="cliente" class="detail-value"></span>
                 <span class="detail-label">Teléfono:</span><span id="cliente-telefono" class="detail-value"></span>
                 <span class="detail-label">Email:</span><span id="cliente-email" class="detail-value"></span>
+                <hr>
                 <span class="detail-label">Servicio:</span><span id="servicio" class="detail-value"></span>
                 <span class="detail-label">Duración:</span><span id="duracion" class="detail-value"></span>
                 <span class="detail-label">Precio:</span><span id="precio" class="detail-value"></span>
+                <hr>
                 <span class="detail-label">Barbero:</span><span id="barbero" class="detail-value"></span>
                 <span class="detail-label">Sede:</span><span id="sede" class="detail-value"></span>
             </div>
         </div>
         
+        <!-- Botón para regresar a la agenda -->
         <a href="/barbero/agenda.html" class="btn" style="margin-top: 30px;">Volver a la Agenda</a>
     </div>
+    
+    <!-- Enlace al nuevo archivo JS -->
     <script src="/barbero/detalle-cita.js"></script>
 </body>
 </html>
