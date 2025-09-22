@@ -1,0 +1,50 @@
+/* Estilos generales */
+body {
+    font-family: Arial, sans-serif;
+    background-color: #121212;
+    color: #e0e0e0;
+    display: flex;
+    justify-content: center;
+    align-items: center;
+    height: 100vh;
+    margin: 0;
+}
+
+/* Contenedor principal de la página de selección */
+.selection-container {
+    text-align: center;
+    background-color: #1e1e1e;
+    padding: 40px;
+    border-radius: 10px;
+    box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+}
+
+h1 {
+    color: #d4af37; /* Un tono dorado */
+    margin-bottom: 20px;
+}
+
+/* Grupo de botones */
+.button-group {
+    margin-top: 30px;
+    display: flex;
+    gap: 20px;
+    justify-content: center;
+}
+
+/* Estilo de los botones/enlaces */
+.role-button {
+    text-decoration: none;
+    color: #121212;
+    background-color: #d4af37;
+    padding: 15px 30px;
+    border-radius: 5px;
+    font-size: 1.1em;
+    font-weight: bold;
+    transition: background-color 0.3s, transform 0.2s;
+}
+
+.role-button:hover {
+    background-color: #b89a30; /* Un dorado más oscuro */
+    transform: translateY(-2px);
+}

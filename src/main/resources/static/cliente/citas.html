@@ -1,0 +1,158 @@
+<!DOCTYPE html>
+<html lang="es">
+<head>
+    <meta charset="UTF-8">
+    <meta name="viewport" content="width=device-width, initial-scale=1.0">
+    <title>Agendar Cita - Kingdom Barber</title>
+    <!-- Reutilizamos los estilos generales -->
+    <link rel="stylesheet" href="/css/style.css"> 
+    <style>
+        /* Estilos específicos para esta página */
+        .container {
+            width: 90%;
+            max-width: 1200px;
+            margin: 20px auto;
+            background-color: #1e1e1e;
+            padding: 20px;
+            border-radius: 8px;
+            box-shadow: 0 4px 15px rgba(0, 0, 0, 0.5);
+        }
+
+        .form-section, .table-section {
+            margin-bottom: 30px;
+        }
+
+        /* Estilos del formulario */
+        form {
+            display: grid;
+            grid-template-columns: repeat(auto-fit, minmax(250px, 1fr));
+            gap: 20px;
+        }
+
+        .form-group {
+            display: flex;
+            flex-direction: column;
+        }
+
+        label {
+            margin-bottom: 8px;
+            font-weight: bold;
+            color: #d4af37;
+        }
+
+        input, select {
+            padding: 10px;
+            border-radius: 4px;
+            border: 1px solid #555;
+            background-color: #333;
+            color: #e0e0e0;
+            font-size: 1em;
+        }
+
+        button {
+            grid-column: 1 / -1; /* Ocupa todo el ancho */
+            padding: 12px;
+            background-color: #d4af37;
+            color: #121212;
+            border: none;
+            border-radius: 5px;
+            font-size: 1.1em;
+            font-weight: bold;
+            cursor: pointer;
+            transition: background-color 0.3s;
+        }
+
+        button:hover {
+            background-color: #b89a30;
+        }
+
+        /* Estilos de la tabla */
+        table {
+            width: 100%;
+            border-collapse: collapse;
+            margin-top: 20px;
+        }
+        th, td {
+            padding: 12px;
+            text-align: left;
+            border-bottom: 1px solid #444;
+        }
+        th {
+            background-color: #333;
+            color: #d4af37;
+        }
+    </style>
+</head>
+<body>
+
+    <div class="container">
+        
+        <!-- Sección del Formulario para Agendar Cita -->
+        <div class="form-section">
+            <h1>Agendar una Cita</h1>
+            <form id="cita-form">
+                <div class="form-group">
+                    <label for="cliente-nombre">Tu Nombre:</label>
+                    <input type="text" id="cliente-nombre" required>
+                </div>
+                <div class="form-group">
+                    <label for="cliente-apellido">Tu Apellido:</label>
+                    <input type="text" id="cliente-apellido" required>
+                </div>
+                <div class="form-group">
+                    <label for="fecha">Fecha:</label>
+                    <input type="date" id="fecha" required>
+                </div>
+                <div class="form-group">
+                    <label for="hora">Hora:</label>
+                    <input type="time" id="hora" required>
+                </div>
+                <div class="form-group">
+                    <label for="sede">Sede:</label>
+                    <select id="sede" required>
+                        <option value="">Cargando sedes...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="barbero">Barbero:</label>
+                    <select id="barbero" required>
+                        <option value="">Cargando barberos...</option>
+                    </select>
+                </div>
+                <div class="form-group">
+                    <label for="servicio">Servicio:</label>
+                    <select id="servicio" required>
+                        <option value="">Cargando servicios...</option>
+                    </select>
+                </div>
+                <button type="submit">Agendar Cita</button>
+            </form>
+            <p id="mensaje-respuesta" style="text-align: center; margin-top: 20px;"></p>
+        </div>
+
+        <!-- Sección de la Tabla de Barberos -->
+        <div class="table-section">
+            <h2>Nuestros Barberos</h2>
+            <table id="barberos-table">
+                <thead>
+                    <tr>
+                        <th>Nombre</th>
+                        <th>Apellido</th>
+                        <th>Sede</th>
+                    </tr>
+                </thead>
+                <tbody>
+                    <!-- Las filas se llenarán con JavaScript -->
+                    <tr>
+                        <td colspan="3" style="text-align: center;">Cargando barberos...</td>
+                    </tr>
+                </tbody>
+            </table>
+        </div>
+
+    </div>
+
+    <!-- Enlazamos nuestro archivo JavaScript -->
+    <script src="/cliente/cliente.js"></script>
+</body>
+</html>
