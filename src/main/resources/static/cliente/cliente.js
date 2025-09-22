@@ -1,5 +1,6 @@
 document.addEventListener('DOMContentLoaded', function() {
     
+    // Función única que se ejecuta al cargar la página
     function inicializarPagina() {
         const clienteNombre = localStorage.getItem('clienteNombre');
         const clienteApellido = localStorage.getItem('clienteApellido');
@@ -27,11 +28,13 @@ document.addEventListener('DOMContentLoaded', function() {
         const formTitle = document.getElementById('form-title');
         const citaIdInput = document.getElementById('cita-id');
         const misCitasTableBody = document.querySelector('#mis-citas-table tbody');
+        
+        // Contenedor para la nueva lista de barberos
+        const barberosContainer = document.getElementById('barberos-por-sede-container');
 
-        // --- LÓGICA DE CARGA INICIAL ---
+        // --- LÓGICA DE CARGA INICIAL (Selects del formulario) ---
         async function cargarSelectsIniciales() {
-            // (Esta función permanece igual a la última versión que corregimos)
-             try {
+            try {
                 const [sedesRes, serviciosRes] = await Promise.all([
                     fetch(`${API_BASE_URL}/sedes`),
                     fetch(`${API_BASE_URL}/servicios`)
@@ -60,7 +63,6 @@ document.addEventListener('DOMContentLoaded', function() {
                 
                 barberoSelect.disabled = true;
                 barberoSelect.innerHTML = '<option value="">Primero seleccione una sede</option>';
-
             } catch (error) {
                 console.error('Error cargando datos iniciales:', error);
             }
@@ -73,8 +75,8 @@ document.addEventListener('DOMContentLoaded', function() {
                 return;
             }
             try {
-                // Esta ruta '/barberos/por-sede/{idSede}' debe existir en tu BarberoController
                 const response = await fetch(`${API_BASE_URL}/barberos/por-sede/${idSede}`);
+                if (!response.ok) throw new Error('Respuesta de red no fue ok.');
                 const barberos = await response.json();
                 barberoSelect.innerHTML = '<option value="">Seleccione un barbero</option>';
                 barberos.forEach(barbero => {
@@ -91,7 +93,91 @@ document.addEventListener('DOMContentLoaded', function() {
         
         sedeSelect.addEventListener('change', () => cargarBarberosPorSede(sedeSelect.value));
 
-        // --- NUEVA LÓGICA PARA GESTIONAR CITAS ---
+        // --- NUEVA FUNCIÓN PARA MOSTRAR BARBEROS AGRUPADOS POR SEDE ---
+        async function cargarBarberosAgrupadosPorSede() {
+            try {
+                const [sedesRes, barberosRes] = await Promise.all([
+                    fetch(`${API_BASE_URL}/sedes`),
+                    fetch(`${API_BASE_URL}/barberos`)
+                ]);
+                
+                if (!sedesRes.ok || !barberosRes.ok) {
+                   throw new Error("No se pudo obtener la lista de sedes o barberos.");
+                }
+
+                const sedesOriginal = await sedesRes.json();
+                const barberos = await barberosRes.json();
+                
+                // Aseguramos sedes únicas
+                const sedesUnicas = [...new Map(sedesOriginal.map(sede => [sede.nombreSede, sede])).values()];
+                
+                barberosContainer.innerHTML = ''; // Limpiamos el mensaje "Cargando..."
+
+                sedesUnicas.forEach(sede => {
+                    // Creamos el contenedor para cada sede (el desplegable)
+                    const sedeWrapper = document.createElement('div');
+                    sedeWrapper.className = 'sede-acordeon';
+                    
+                    // Creamos el botón que muestra el nombre de la sede
+                    const sedeBoton = document.createElement('button');
+                    sedeBoton.className = 'sede-acordeon-boton';
+                    sedeBoton.textContent = sede.nombreSede;
+                    
+                    // Creamos el panel que contendrá la lista de barberos (inicialmente oculto)
+                    const panelBarberos = document.createElement('div');
+                    panelBarberos.className = 'sede-acordeon-panel';
+                    
+                    // Filtramos los barberos que pertenecen a esta sede
+                    const barberosDeSede = barberos.filter(b => b.sede.nombreSede === sede.nombreSede);
+
+                    if (barberosDeSede.length > 0) {
+                        const lista = document.createElement('ul');
+                        barberosDeSede.forEach(barbero => {
+                            const item = document.createElement('li');
+                            item.textContent = `${barbero.nombre} ${barbero.apellido}`;
+                            lista.appendChild(item);
+                        });
+                        panelBarberos.appendChild(lista);
+                    } else {
+                        panelBarberos.innerHTML = '<p>No hay barberos asignados a esta sede.</p>';
+                    }
+                    
+                    sedeWrapper.appendChild(sedeBoton);
+                    sedeWrapper.appendChild(panelBarberos);
+                    barberosContainer.appendChild(sedeWrapper);
+                    
+                    // Lógica para mostrar/ocultar el panel
+                    sedeBoton.addEventListener('click', function() {
+                        this.classList.toggle('active');
+                        const panel = this.nextElementSibling;
+                        if (panel.style.maxHeight) {
+                            panel.style.maxHeight = null;
+                        } else {
+                            panel.style.maxHeight = panel.scrollHeight + "px";
+                        }
+                    });
+                });
+                
+                // Añadimos los estilos para el acordeón directamente
+                const style = document.createElement('style');
+                style.textContent = `
+                    .sede-acordeon-boton { background-color: #1f2a40; color: #a4915a; cursor: pointer; padding: 18px; width: 100%; border: none; text-align: left; outline: none; font-size: 1.1em; transition: 0.4s; margin-top: 5px; font-family: 'Cinzel', serif; }
+                    .sede-acordeon-boton.active, .sede-acordeon-boton:hover { background-color: #2a3a5a; }
+                    .sede-acordeon-panel { padding: 0 18px; background-color: #1c2639; max-height: 0; overflow: hidden; transition: max-height 0.2s ease-out; }
+                    .sede-acordeon-panel ul { list-style-type: none; padding: 15px 0; }
+                    .sede-acordeon-panel li { padding: 8px 0; border-bottom: 1px solid #2a3a5a; color: #ccc; }
+                    .sede-acordeon-panel li:last-child { border-bottom: none; }
+                `;
+                document.head.appendChild(style);
+
+            } catch(error) {
+                console.error("Error al cargar barberos por sede:", error);
+                barberosContainer.innerHTML = '<p class="text-center" style="color: red;">Error al cargar la lista de barberos.</p>';
+            }
+        }
+        
+        // --- LÓGICA PARA GESTIONAR CITAS (Editar, Eliminar) ---
+        // (Todo el código de cargarMisCitas, eliminarCita, modoEdicion, etc., permanece aquí sin cambios)
         async function cargarMisCitas() {
             try {
                 const response = await fetch(`${API_BASE_URL}/citas?clienteNombre=${clienteNombre}&clienteApellido=${clienteApellido}`);
@@ -135,7 +221,7 @@ document.addEventListener('DOMContentLoaded', function() {
                 if (response.ok) {
                     mensajeRespuesta.textContent = 'Cita eliminada con éxito.';
                     mensajeRespuesta.style.color = 'lightgreen';
-                    cargarMisCitas(); // Recargar la lista
+                    cargarMisCitas();
                 } else {
                     throw new Error('No se pudo eliminar la cita.');
                 }
@@ -157,12 +243,12 @@ document.addEventListener('DOMContentLoaded', function() {
                 servicioSelect.value = cita.servicio.idServicio;
                 
                 sedeSelect.value = cita.sede.idSede;
-                await cargarBarberosPorSede(cita.sede.idSede); // Cargar barberos de la sede
-                barberoSelect.value = cita.barbero.idBarbero; // Seleccionar el barbero
+                await cargarBarberosPorSede(cita.sede.idSede);
+                barberoSelect.value = cita.barbero.idBarbero;
                 
                 submitButton.textContent = 'Actualizar Cita';
                 cancelEditButton.style.display = 'block';
-                window.scrollTo(0, 0); // Subir al formulario
+                window.scrollTo(0, 0);
             } catch (error) {
                 console.error("Error al cargar datos para edición:", error);
             }
@@ -171,8 +257,8 @@ document.addEventListener('DOMContentLoaded', function() {
         function cancelarEdicion() {
             formTitle.textContent = 'Agendar una Cita';
             citaForm.reset();
-            nombreInput.value = clienteNombre; // Restaurar nombre
-            apellidoInput.value = clienteApellido; // Restaurar apellido
+            nombreInput.value = clienteNombre;
+            apellidoInput.value = clienteApellido;
             citaIdInput.value = '';
             submitButton.textContent = 'Agendar Cita';
             cancelEditButton.style.display = 'none';
@@ -226,15 +312,13 @@ document.addEventListener('DOMContentLoaded', function() {
                 mensajeRespuesta.style.color = 'red';
             }
         });
-
-        // --- LLAMADAS INICIALES ---
-        inicializarPagina();
-        function inicializarPagina() {
-            cargarSelectsIniciales();
-            cargarMisCitas();
-            // cargarTablaBarberos(); // Puedes decidir si aún necesitas esta tabla
-        }
+        
+        // --- LLAMADAS INICIALES CORREGIDAS ---
+        cargarSelectsIniciales();
+        cargarMisCitas();
+        cargarBarberosAgrupadosPorSede(); // <- ¡Llamamos a la nueva función aquí!
     }
 
+    // --- PUNTO DE ENTRADA ---
     inicializarPagina();
 });

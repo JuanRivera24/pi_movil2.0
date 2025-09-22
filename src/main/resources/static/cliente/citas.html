@@ -50,7 +50,7 @@
         </form>
         <p id="mensaje-respuesta" class="mensaje-respuesta"></p>
 
-        <!-- =========== NUEVA SECCIÓN: MIS CITAS PROGRAMADAS =========== -->
+        <!-- =========== SECCIÓN: MIS CITAS PROGRAMADAS =========== -->
         <section style="margin-top: 50px;">
             <h2>Mis Citas Programadas</h2>
             <div class="table-wrapper">
@@ -70,26 +70,21 @@
                 </table>
             </div>
         </section>
-        <!-- ========================================================== -->
-
+        
+        <!-- =========== SECCIÓN DE BARBEROS MODIFICADA =========== -->
         <section style="margin-top: 50px;">
             <h2>Nuestros Barberos</h2>
-            <div class="table-wrapper">
-                <table id="barberos-table">
-                    <thead>
-                        <tr>
-                            <th>Nombre</th>
-                            <th>Apellido</th>
-                            <th>Sede</th>
-                        </tr>
-                    </thead>
-                    <tbody>
-                        <tr><td colspan="3" class="text-center">Cargando barberos...</td></tr>
-                    </tbody>
-                </table>
+            
+            <!-- Contenedor para el acordeón de sedes y barberos. La tabla se ha eliminado. -->
+            <div id="barberos-por-sede-container">
+                <p class="text-center">Cargando barberos...</p>
             </div>
+
         </section>
+        <!-- ========================================================== -->
+
     </div>
+    
     <!-- La ruta a cliente.js debe ser correcta -->
     <script src="/cliente/cliente.js"></script>
 </body>
