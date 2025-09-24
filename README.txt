@@ -101,21 +101,66 @@ de software para crear una solución escalable y fácil de mantener.
         ✅ CUMPLIMIENTO DE REQUISITOS DEL PROYECTO
 ======================================================================
 
-- Backend Robusto:
-  Controladores y endpoints en Spring Boot para lógica de negocio 
-  y persistencia de datos.
+-----------------------------
+-- FRONTEND --
+-----------------------------
 
-- Frontend Interactivo:
-  Formularios HTML + JavaScript para procesar y enviar datos a la API.
+- Formularios de Ingreso (inputs, submit en HTML):  
+  CUMPLE. El sistema cuenta con formularios claros para agendar citas, 
+  seleccionar sede y filtrar datos.
 
-- Separación de Roles:
-  Flujos distintos y seguros para "Clientes" y "Barberos".
+- Captura de Datos con FormData y JSON:  
+  CUMPLE. JavaScript captura los valores de los formularios, los convierte 
+  en objetos JSON y los envía al backend.
 
-- Experiencia de Usuario Mejorada:
-  Diseño bien estructurado, atractivo y funcional, 
-  aun sin frameworks complejos.
+- Peticiones y Envío de Datos con fetch:  
+  CUMPLE. Los scripts (cliente.js, barbero.js, detalle-cita.js) usan fetch 
+  para operaciones GET, POST y DELETE con la API de Spring Boot.
 
-- Simulación de Componentes y Estado:
-  Aunque no se usa React, se aplican conceptos como "componentes" 
-  (ej. detalle-cita.html) y paso de "props" (parámetros en la URL), 
-  logrando una arquitectura modular y organizada.
+- Presentación HTML con Diseño Mejorado:  
+  CUMPLE. La interfaz cuenta con estilo en CSS y organización en tarjetas, 
+  superando un diseño básico.
+
+-----------------------------
+-- BACKEND --
+-----------------------------
+
+- Recepción de Datos vía API REST:  
+  CUMPLE. Controladores como `CitaController.java` implementan endpoints 
+  RESTful (@GetMapping, @PostMapping, etc.).
+
+- Procesamiento de Datos (Casos de Uso):  
+  CUMPLE. La lógica incluye validaciones como verificar si un cliente 
+  existe antes de crear uno nuevo.
+
+- Conexión con Base de Datos (CRUD):  
+  CUMPLE. Repositorios JPA permiten crear, leer, actualizar y eliminar 
+  citas, clientes y barberos.
+
+- Generación de Respuestas JSON:  
+  CUMPLE. Los controladores devuelven objetos o listas que Spring Boot 
+  convierte automáticamente en JSON.
+
+-----------------------------
+-- REQUISITOS ADICIONALES --
+-----------------------------
+
+- Ingreso por Roles (Cliente/Barbero):  
+  CUMPLE. El sistema diferencia roles y redirige a vistas específicas 
+  para cada tipo de usuario.  
+
+- Funcionalidad del Cliente:  
+  CUMPLE. Puede ver barberos, sedes, servicios y pedir citas mediante 
+  un formulario.  
+
+- Funcionalidad del Barbero:  
+  CUMPLE. Puede visualizar su agenda, consultar detalles de citas y 
+  cancelarlas directamente.  
+
+- Experiencia de Usuario Optimizada:  
+  CUMPLE. Diseño estructurado, validaciones y flujo amigable.  
+
+- Simulación de Componentes y Estado:  
+  CUMPLE. Aunque no se usa React, el sistema simula componentes con 
+  páginas reutilizables (ej. detalle-cita.html) y paso de datos mediante 
+  parámetros en la URL.
