@@ -1,5 +1,5 @@
 package com.kingdombarber.api.repository;
 
-public class CitaRepository {
+public class GaleriaRepository {
     
 }

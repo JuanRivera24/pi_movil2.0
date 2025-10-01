@@ -1,5 +1,5 @@
 package com.kingdombarber.api.model;
 
-public class Cita {
+public class Contacto {
     
 }
