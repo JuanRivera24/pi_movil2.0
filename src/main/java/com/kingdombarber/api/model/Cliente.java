@@ -1,24 +1,26 @@
 package com.kingdombarber.api.model;
-
+import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
-import jakarta.persistence.GeneratedValue;
-import jakarta.persistence.GenerationType;
 import jakarta.persistence.Id;
+import jakarta.persistence.Table;
 import lombok.Getter;
 import lombok.Setter;
 
-@Entity
-@Getter
-@Setter
+@Entity @Table(name = "CLIENTES") @Getter @Setter
 public class Cliente {
-
     @Id
-    @GeneratedValue(strategy = GenerationType.IDENTITY)
-    private Long idCliente;
+    @Column(name = "ID_Cliente")
+    private Long id;
 
-    private String nombre;
-    private String apellido;
+    @Column(name = "Nombre_Cliente")
+    private String nombreCliente;
+
+    @Column(name = "Apellido_Cliente")
+    private String apellidoCliente;
+
+    @Column(name = "Telefono")
     private String telefono;
+    
+    @Column(name = "Email")
     private String email;
-
 }
