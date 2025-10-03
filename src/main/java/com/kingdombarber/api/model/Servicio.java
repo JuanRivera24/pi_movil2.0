@@ -1,3 +1,4 @@
+// Archivo: Servicio.java
 package com.kingdombarber.api.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,10 +11,13 @@ import lombok.Setter;
 public class Servicio {
     @Id @Column(name = "ID_Servicio")
     private Long id;
+
     @Column(name = "Nombre_Servicio")
     private String nombreServicio;
+
     @Column(name = "Precio")
     private Double precio;
+
     @Column(name = "Duracion_min")
     private Integer duracionMin;
 }

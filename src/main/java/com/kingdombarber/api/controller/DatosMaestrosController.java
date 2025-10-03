@@ -16,8 +16,6 @@ import com.kingdombarber.api.repository.ServicioRepository;
 @RestController
 public class DatosMaestrosController {
 
-    // @Autowired le pide a Spring que nos "inyecte" una instancia funcional
-    // de nuestros repositorios para que podamos usarlos.
     @Autowired
     private SedeRepository sedeRepository;
     
@@ -27,20 +25,16 @@ public class DatosMaestrosController {
     @Autowired
     private ServicioRepository servicioRepository;
 
-    // Este método se ejecutará cuando se pida la URL: GET http://localhost:8080/sedes
     @GetMapping("/sedes")
     public List<Sede> getAllSedes() {
-        // Spring convierte la lista de Sedes a JSON automáticamente
         return sedeRepository.findAll();
     }
     
-    // URL: GET http://localhost:8080/barberos
     @GetMapping("/barberos")
     public List<Barbero> getAllBarberos() {
         return barberoRepository.findAll();
     }
 
-    // URL: GET http://localhost:8080/servicios
     @GetMapping("/servicios")
     public List<Servicio> getAllServicios() {
         return servicioRepository.findAll();

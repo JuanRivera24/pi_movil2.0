@@ -1,3 +1,4 @@
+// Archivo: Sede.java
 package com.kingdombarber.api.model;
 import jakarta.persistence.Column;
 import jakarta.persistence.Entity;
@@ -10,6 +11,7 @@ import lombok.Setter;
 public class Sede {
     @Id @Column(name = "ID_Sede")
     private Long id;
+    
     @Column(name = "Nombre_Sede")
     private String nombreSede;
 }
