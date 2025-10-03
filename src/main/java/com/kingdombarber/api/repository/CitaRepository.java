@@ -1,5 +1,9 @@
+// Archivo: CitaRepository.java
 package com.kingdombarber.api.repository;
+import org.springframework.data.jpa.repository.JpaRepository;
+import org.springframework.stereotype.Repository;
 
-public class CitaRepository {
-    
-}
+import com.kingdombarber.api.model.Cita;
+
+@Repository
+public interface CitaRepository extends JpaRepository<Cita, Long> {}

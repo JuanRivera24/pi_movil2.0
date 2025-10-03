@@ -1,5 +1,4 @@
 package com.kingdombarber.api.model;
-
 import java.time.ZonedDateTime;
 
 import jakarta.persistence.Column;
@@ -13,28 +12,20 @@ import lombok.Setter;
 @Entity @Table(name = "NUEVAS_CITAS") @Getter @Setter
 public class NuevaCita {
     @Id
-    private String id; // Usamos String como en tu JSON original
-    
+    private String id;
     private String title;
-    private ZonedDateTime start;
-    private ZonedDateTime end;
+    @Column(name = "fecha_inicio")
+    private ZonedDateTime fechaInicio;
+    @Column(name = "fecha_fin")
+    private ZonedDateTime fechaFin;
     private Double totalCost;
-    
     private String clienteId;
     private Long sedeId;
     private Long barberId;
-    
-    // Para campos complejos como 'services' y 'serviciosDetalle' que son arrays/objetos,
-    // una forma simple de empezar es guardarlos como texto.
-    @Lob // Large Object: para guardar texto largo
-    @Column(columnDefinition = "TEXT")
+    @Lob @Column(columnDefinition = "TEXT")
     private String services;
-    
-    @Lob
-    @Column(columnDefinition = "TEXT")
+    @Lob @Column(columnDefinition = "TEXT")
     private String serviciosDetalle;
-
-    // Campos que habia omitido, ahora incluidos
     private String nombreSede;
     private String nombreCompletoBarbero;
 }

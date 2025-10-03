@@ -8,19 +8,14 @@ import lombok.Setter;
 
 @Entity @Table(name = "CLIENTES") @Getter @Setter
 public class Cliente {
-    @Id
-    @Column(name = "ID_Cliente")
+    @Id @Column(name = "ID_Cliente")
     private Long id;
-
     @Column(name = "Nombre_Cliente")
     private String nombreCliente;
-
     @Column(name = "Apellido_Cliente")
     private String apellidoCliente;
-
     @Column(name = "Telefono")
     private String telefono;
-    
     @Column(name = "Email")
     private String email;
 }

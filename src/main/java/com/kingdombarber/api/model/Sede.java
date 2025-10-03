@@ -8,10 +8,8 @@ import lombok.Setter;
 
 @Entity @Table(name = "SEDES") @Getter @Setter
 public class Sede {
-    @Id
-    @Column(name = "ID_Sede")
+    @Id @Column(name = "ID_Sede")
     private Long id;
-    
     @Column(name = "Nombre_Sede")
     private String nombreSede;
 }

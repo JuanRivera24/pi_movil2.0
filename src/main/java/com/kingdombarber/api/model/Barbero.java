@@ -10,18 +10,12 @@ import lombok.Setter;
 
 @Entity @Table(name = "BARBEROS") @Getter @Setter
 public class Barbero {
-    @Id
-    @Column(name = "ID_Barbero")
+    @Id @Column(name = "ID_Barbero")
     private Long id;
-
     @Column(name = "Nombre_Barbero")
     private String nombreBarbero;
-
     @Column(name = "Apellido_Barbero")
     private String apellidoBarbero;
-
-    // Relación: Muchos barberos pueden estar en una sede
-    @ManyToOne
-    @JoinColumn(name = "ID_Sede")
+    @ManyToOne @JoinColumn(name = "ID_Sede")
     private Sede sede;
 }

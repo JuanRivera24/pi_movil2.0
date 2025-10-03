@@ -12,14 +12,10 @@ import lombok.Setter;
 @Entity @Table(name = "CONTACTOS") @Getter @Setter
 public class Contacto {
     @Id
-    private String id; // Usamos String como en tu JSON original
-    
+    private String id;
     private String nombre;
     private String email;
-    
-    @Lob
-    @Column(columnDefinition = "TEXT")
+    @Lob @Column(columnDefinition = "TEXT")
     private String mensaje;
-
     private ZonedDateTime fecha;
 }
