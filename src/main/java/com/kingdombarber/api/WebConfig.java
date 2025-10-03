@@ -24,12 +24,12 @@ public class WebConfig implements WebMvcConfigurer {
         registry.addInterceptor(requestLoggingInterceptor);
     }
 
-    // --- NUEVO BLOQUE PARA HABILITAR CORS ---
+    // --- ESTE BLOQUE ES EL MÁS IMPORTANTE ---
     @Override
     public void addCorsMappings(CorsRegistry registry) {
-        registry.addMapping("/**") // Permite CORS en todas las rutas de la API
-                .allowedOrigins("http://localhost:3000") // Permite peticiones SOLO desde tu app web
-                .allowedMethods("GET", "POST", "PUT", "DELETE", "HEAD", "OPTIONS") // Métodos permitidos
+        registry.addMapping("/**") // Permite CORS en TODAS las rutas de la API ("/**")
+                .allowedOrigins("http://localhost:3000") // Acepta peticiones desde tu app de Next.js
+                .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS") // Métodos permitidos
                 .allowedHeaders("*")
                 .allowCredentials(true);
     }
