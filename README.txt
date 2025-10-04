@@ -27,12 +27,15 @@ Antes de empezar, asegúrate de tener instalado lo siguiente en tu sistema:
 -----------------------------
 
 **Paso 1: Clonar el Repositorio**
-```bash
+```
 git clone https://github.com/JuanRivera24/pi_movil2.0.git
 cd pi_movil2
 ```
 
 **Paso 2: Compilar y Ejecutar la Aplicación**
+
+Ejecutar "Run" en ApiApplication.java, o dar click en "Run Java"
+
 
 La forma más sencilla de ejecutar un proyecto Spring Boot es utilizando el Maven Wrapper incluido:
 
