@@ -1,92 +1,120 @@
 ======================================================================
-           📱 DOCUMENTACIÓN: API MÓVILES 2 - KINGDOM BARBER
+         📱 KINGDOM BARBER - API CENTRAL (pi_movil2)
 ======================================================================
 
+🗓️ **Documentación: API Móviles 2 - Kingdom Barber**  
 📅 **Fecha:** Octubre, 2025  
-👨‍💻 **Autores:** Juan Rivera, Andrés Vallejo, Alejandro Urrego
+👥 **Autores:** Juan Rivera, Andrés Vallejo, Alejandro Urrego  
+
+Este repositorio contiene el código del **back-end** para todo el ecosistema de Kingdom Barber.  
+Es una **API RESTful** desarrollada con **Java y Spring Boot**, que actúa como el cerebro y la **única fuente de verdad** para todos los clientes front-end (`pi_web2.0` y `pi_ntp2.0`).
 
 ======================================================================
-                     🧠 RESUMEN DEL PROYECTO
+        📖 GUÍA DE EJECUCIÓN Y MANUAL DE ENDPOINTS
 ======================================================================
 
-Esta API es el **cerebro y la fuente única de verdad** para todo el ecosistema 
-de aplicaciones de Kingdom Barber.  
+-----------------------------
+-- 1. REQUISITOS PREVIOS --
+-----------------------------
 
-Desarrollada con **Java y Spring Boot**, su propósito es **centralizar toda la lógica de negocio 
-y la persistencia de datos**, sirviendo información de manera consistente a múltiples clientes.
+Antes de empezar, asegúrate de tener instalado lo siguiente en tu sistema:
 
-Actualmente, esta API da servicio a dos aplicaciones cliente:
+- ☕ **Java Development Kit (JDK)** – Versión 17 o superior  
+- 🧰 **Apache Maven** – Para compilar el proyecto y gestionar dependencias  
 
-- **pi_web2.0 (Front-End Web):**  
-  Aplicación moderna desarrollada en Next.js donde los clientes pueden ver información, 
-  agendar citas, explorar la galería y contactar a la barbería.
+-----------------------------
+-- 2. INSTALACIÓN Y EJECUCIÓN --
+-----------------------------
 
-- **pi_ntp2.0 (Dashboard de Análisis):**  
-  Aplicación en Python/Streamlit que consume grandes volúmenes de datos históricos 
-  para generar visualizaciones, reportes y análisis de negocio.
+**Paso 1: Clonar el Repositorio**
+```bash
+git clone https://github.com/JuanRivera24/pi_movil2.0.git
+cd pi_movil2
+```
 
-La arquitectura desacopla completamente el back-end de los front-ends, 
-permitiendo que cada pieza del sistema evolucione de forma independiente.
+**Paso 2: Compilar y Ejecutar la Aplicación**
+
+La forma más sencilla de ejecutar un proyecto Spring Boot es utilizando el Maven Wrapper incluido:
+
+```bash
+# En Windows
+./mvnw spring-boot:run
+
+# En macOS/Linux
+./mvnw spring-boot:run
+```
+
+El servidor se iniciará y la API estará disponible en:  
+👉 **http://localhost:8080**
+
+**Nota sobre la Base de Datos:**  
+La API utiliza una base de datos en memoria **H2**, lo que significa que:
+- No necesitas instalar ninguna base de datos.
+- Los datos se cargan desde `src/main/resources/data.sql` cada vez que la aplicación arranca.
 
 ======================================================================
-                     🎯 OBJETIVOS DEL PROYECTO
+               🧠 1. RESUMEN DEL PROYECTO
+======================================================================
+
+Esta API es el **núcleo** y la **fuente única de verdad** para todo el ecosistema **Kingdom Barber**.  
+Desarrollada con **Java y Spring Boot**, centraliza la lógica de negocio y la persistencia de datos,  
+sirviendo información de forma consistente a múltiples clientes.
+
+**Clientes que consumen esta API:**
+- 💻 `pi_web2.0`: Aplicación web moderna (Next.js) para agendar citas, ver servicios y contactar la barbería.  
+- 📊 `pi_ntp2.0`: Dashboard de análisis en **Python/Streamlit** para reportes y visualizaciones.
+
+Esta arquitectura **desacopla completamente** el backend de los frontends,  
+permitiendo que cada componente evolucione de forma independiente.
+
+======================================================================
+               🎯 2. OBJETIVOS DEL PROYECTO
 ======================================================================
 
 -----------------------------
 -- OBJETIVO PRINCIPAL --
 -----------------------------
 
-Centralizar toda la lógica de negocio y la persistencia de datos del ecosistema 
-Kingdom Barber en una única **API RESTful** robusta, segura y escalable.
+Centralizar toda la lógica de negocio y la persistencia de datos del ecosistema **Kingdom Barber**  
+en una **única API RESTful** robusta, segura y escalable.
 
 -----------------------------
 -- OBJETIVOS ESPECÍFICOS --
 -----------------------------
 
-- **Proveer Endpoints Claros:**  
-  Exponer un conjunto de endpoints RESTful bien definidos para operaciones CRUD 
-  (citas, galería, datos maestros, etc.).
-
-- **Desacoplar Clientes:**  
-  Eliminar la dependencia de los clientes sobre la forma en que se almacenan los datos, 
-  permitiendo cambios o escalabilidad sin afectar los front-ends.
-
-- **Garantizar la Consistencia:**  
-  Asegurar que todas las aplicaciones consuman y modifiquen la misma fuente de datos, 
-  evitando inconsistencias y duplicidad.
-
-- **Establecer una Base Escalable:**  
-  Sentar las bases para que futuros clientes, como una aplicación móvil, 
-  puedan integrarse fácilmente sin modificar la lógica del back-end.
+- ✅ **Proveer Endpoints Claros:** Endpoints RESTful bien definidos para operaciones CRUD (citas, galería, datos maestros, etc.)  
+- 🧩 **Desacoplar Clientes:** Permitir que los front-ends funcionen sin depender del almacenamiento de datos.  
+- 🔄 **Garantizar Consistencia:** Unificar lectura y escritura de datos para evitar duplicidad.  
+- 🚀 **Base Escalable:** Preparar el sistema para soportar nuevos clientes (como apps móviles).
 
 ======================================================================
-                  ⚙️ STACK TECNOLÓGICO
+               ⚙️ 3. STACK TECNOLÓGICO
 ======================================================================
 
-- **Lenguaje:** Java 17+  
-- **Framework Principal:** Spring Boot 3.x  
-- **Acceso a Datos:** Spring Data JPA / Hibernate  
-- **Base de Datos:** H2 Database (en memoria para desarrollo y pruebas)  
-- **Servidor Web:** Apache Tomcat (embebido)  
-- **Gestor de Dependencias:** Maven  
-- **Utilidades:** Lombok (para reducir código repetitivo en los modelos)
+- 💻 **Lenguaje:** Java 17+  
+- 🧱 **Framework Principal:** Spring Boot 3.x  
+- 🗄️ **Acceso a Datos:** Spring Data JPA / Hibernate  
+- 🧬 **Base de Datos:** H2 Database (en memoria para desarrollo y pruebas)  
+- 🌐 **Servidor Web:** Apache Tomcat (embebido)  
+- 🧩 **Gestor de Dependencias:** Maven  
+- ✨ **Utilidades:** Lombok (reduce código repetitivo en modelos)
 
 ======================================================================
-             🏗️ ARQUITECTURA Y ESTRUCTURA DE CARPETAS
+          🏗️ 4. ARQUITECTURA Y ESTRUCTURA DE CARPETAS
 ======================================================================
 
-El proyecto sigue una arquitectura **API REST** estándar, organizada por responsabilidades:
+El proyecto sigue una arquitectura **API REST estándar**, organizada por responsabilidades:
 
 ```
 src/main/java/com/kingdombarber/api/
-├── 📂 controller/   # Reciben peticiones HTTP y definen los endpoints.
+├── 📂 controller/   # Reciben peticiones HTTP y definen las URLs (endpoints)
 │   ├── AgendamientoController.java
 │   ├── ContactoController.java
 │   ├── DashboardController.java
 │   ├── DatosMaestrosController.java
 │   └── GaleriaController.java
 │
-├── 📂 model/        # Clases @Entity que representan las tablas de la base de datos.
+├── 📂 model/        # Clases @Entity que representan las tablas de la base de datos
 │   ├── Barbero.java
 │   ├── Cita.java
 │   ├── Cliente.java
@@ -96,99 +124,88 @@ src/main/java/com/kingdombarber/api/
 │   ├── Sede.java
 │   └── Servicio.java
 │
-├── 📂 repository/   # Interfaces que extienden JpaRepository para las operaciones CRUD.
+├── 📂 repository/   # Interfaces que extienden JpaRepository para CRUD
 │   ├── BarberoRepository.java
 │   ├── CitaRepository.java
 │   └── ... (otros repositorios)
 │
-├── 📜 ApiApplication.java             # Punto de entrada principal.
-├── 📜 WebConfig.java                  # Configuración de CORS y archivos estáticos.
-└── 📜 RequestLoggingInterceptor.java  # Middleware para registrar peticiones.
+├── 📜 ApiApplication.java              # Punto de entrada principal
+├── 📜 WebConfig.java                   # Configuración CORS y archivos estáticos
+└── 📜 RequestLoggingInterceptor.java   # Middleware para registrar peticiones
+```
 
+```
 src/main/resources/
-├── 📜 application.properties   # Configuración de base de datos y servidor.
-└── 📜 data.sql                 # Script SQL para la carga inicial de datos.
+├── 📜 application.properties  # Configuración de la base de datos, servidor, etc.
+└── 📜 data.sql                # Script SQL para la carga inicial de datos
 ```
 
 ======================================================================
-               🔗 DESCRIPCIÓN DE ENDPOINTS PRINCIPALES
+          🌐 5. DESCRIPCIÓN DE ENDPOINTS PRINCIPALES
 ======================================================================
 
-La API está organizada en los siguientes controladores:
+-----------------------------
+-- DatosMaestrosController --
+-----------------------------
+- `GET /sedes` → Lista todas las sedes  
+- `GET /barberos` → Lista todos los barberos  
+- `GET /servicios` → Lista todos los servicios  
 
 -----------------------------
--- DATOS MAESTROS --
+-- DashboardController (pi_ntp2.0) --
 -----------------------------
-
-**DatosMaestrosController**
-- `GET /sedes` → Devuelve la lista de todas las sedes.  
-- `GET /barberos` → Devuelve la lista de todos los barberos.  
-- `GET /servicios` → Devuelve la lista de todos los servicios.
+- `GET /historial/citas` → Devuelve el historial completo (~4000 registros)  
+- `GET /clientes` → Devuelve la lista de clientes  
 
 -----------------------------
--- DASHBOARD (pi_ntp2.0) --
+-- AgendamientoController (pi_web2.0) --
 -----------------------------
-
-**DashboardController**
-- `GET /historial/citas` → Devuelve el historial completo de citas (~4000 registros).  
-- `GET /clientes` → Devuelve la lista completa de clientes.
-
------------------------------
--- AGENDAMIENTO (pi_web2.0) --
------------------------------
-
-**AgendamientoController**
-- `GET /citas-activas` → Devuelve las citas del calendario.  
-- `POST /citas-activas` → Crea una nueva cita.  
-- `PUT /citas-activas/{id}` → Modifica una cita existente.  
-- `DELETE /citas-activas/{id}` → Elimina una cita.
+- `GET /citas-activas` → Devuelve las citas activas  
+- `POST /citas-activas` → Crea una nueva cita  
+- `PUT /citas-activas/{id}` → Modifica una cita existente  
+- `DELETE /citas-activas/{id}` → Elimina una cita  
 
 -----------------------------
--- CONTACTO (pi_web2.0) --
+-- ContactoController --
 -----------------------------
-
-**ContactoController**
-- `POST /contactanos` → Recibe y guarda un nuevo mensaje del formulario de contacto.
+- `POST /contactanos` → Recibe y guarda mensajes del formulario de contacto  
 
 -----------------------------
--- GALERÍA (pi_web2.0) --
+-- GaleriaController --
 -----------------------------
-
-**GaleriaController**
-- `GET /galeria` → Devuelve la lista de imágenes.  
-- `POST /galeria/upload` → Sube una nueva imagen con descripción y categoría.  
-- `PUT /galeria/{id}` → Modifica la información de una imagen.  
-- `DELETE /galeria/{id}` → Elimina una imagen (de la base de datos y del disco).
+- `GET /galeria` → Devuelve imágenes de la galería  
+- `POST /galeria/upload` → Sube una nueva imagen con descripción y categoría  
+- `PUT /galeria/{id}` → Modifica la información de una imagen  
+- `DELETE /galeria/{id}` → Elimina una imagen (de la base de datos y del disco)
 
 ======================================================================
-              🔄 FLUJO DE DATOS: CREACIÓN DE UNA CITA
+       🔁 6. FLUJO DE DATOS: CREACIÓN DE UNA CITA
 ======================================================================
 
-1. **Cliente Front-End (pi_web2.0):**  
-   El usuario completa el formulario de agendamiento y confirma la cita.
+1️⃣ **Cliente Front-End (pi_web2.0):**  
+El usuario completa el formulario de agendamiento y confirma la cita.
 
-2. **JavaScript (React):**  
-   El componente construye un objeto JSON y envía una petición `POST` al endpoint  
-   `http://localhost:8080/citas-activas` usando `fetch()`.
+2️⃣ **JavaScript (React):**  
+Captura los datos, construye un objeto JSON y envía una petición `POST` a  
+`http://localhost:8080/citas-activas`.
 
-3. **Controlador (API Java):**  
-   `AgendamientoController` recibe la petición mediante `@PostMapping("/citas-activas")`.  
-   Spring Boot convierte el cuerpo JSON en un objeto `NuevaCita`.
+3️⃣ **Controlador (API Java):**  
+`AgendamientoController` recibe la petición con `@PostMapping("/citas-activas")`.  
+Spring Boot convierte automáticamente el cuerpo JSON en un objeto `NuevaCita`.
 
-4. **Lógica de Negocio:**  
-   El controlador enriquece el objeto (por ejemplo, obteniendo el nombre de la sede)  
-   y lo envía al repositorio correspondiente.
+4️⃣ **Lógica de Negocio:**  
+El controlador complementa la información (por ejemplo, sede o servicio)  
+y llama al repositorio correspondiente.
 
-5. **Repositorio (JPA):**  
-   `NuevaCitaRepository.save()` genera e ejecuta una sentencia `INSERT INTO` en la base de datos H2.
+5️⃣ **Repositorio (JPA):**  
+`NuevaCitaRepository.save()` ejecuta el `INSERT INTO` en la base de datos H2.
 
-6. **Respuesta del Back-End:**  
-   Spring Boot devuelve la entidad completa como JSON junto con un código de estado `200 OK`.
+6️⃣ **Respuesta del Back-End:**  
+Devuelve la entidad creada como JSON con código `200 OK`.
 
-7. **Actualización del Front-End:**  
-   React actualiza su estado interno, agrega el nuevo evento al calendario  
-   y muestra una notificación de éxito al usuario.
+7️⃣ **Actualización del Front-End:**  
+React recibe la respuesta, actualiza su estado y muestra un mensaje de éxito.
 
 ======================================================================
-✅ FIN DE LA DOCUMENTACIÓN
+        🧩 FIN DE LA DOCUMENTACIÓN TÉCNICA
 ======================================================================
