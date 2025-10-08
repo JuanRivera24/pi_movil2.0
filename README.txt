@@ -1,166 +1,214 @@
 ======================================================================
-                 KINGDOM BARBER - SISTEMA DE GESTIÓN DE CITAS
+         📱 KINGDOM BARBER - API CENTRAL (pi_movil2)
 ======================================================================
 
-📜 DESCRIPCIÓN GENERAL
-----------------------
+🗓️ **Documentación: API Móviles 2 - Kingdom Barber**  
+📅 **Fecha:** Octubre, 2025  
+👥 **Autores:** Juan Rivera, Andrés Vallejo, Alejandro Urrego  
 
-Kingdom Barber es una aplicación web completa desarrollada con Spring Boot 
-y Vanilla JavaScript, diseñada para modernizar y simplificar la gestión de 
-citas en una barbería. 
-
-La plataforma ofrece dos portales distintos:
-- Portal del Cliente
-- Portal del Barbero
-
-Cada uno con funcionalidades específicas para sus necesidades, garantizando 
-una experiencia de usuario fluida e intuitiva.
-
-El proyecto demuestra una arquitectura robusta de backend y un frontend 
-dinámico e interactivo, cumpliendo con las mejores prácticas de desarrollo 
-de software para crear una solución escalable y fácil de mantener.
+Este repositorio contiene el código del **back-end** para todo el ecosistema de Kingdom Barber.  
+Es una **API RESTful** desarrollada con **Java y Spring Boot**, que actúa como el cerebro y la **única fuente de verdad** para todos los clientes front-end (`pi_web2.0` y `pi_ntp2.0`).
 
 ======================================================================
-                   ✨ CARACTERÍSTICAS PRINCIPALES
+        📖 GUÍA DE EJECUCIÓN Y MANUAL DE ENDPOINTS
 ======================================================================
 
 -----------------------------
--- PORTAL DEL CLIENTE --
+-- 1. REQUISITOS PREVIOS --
 -----------------------------
 
-- Reservar Cita:
-  Un formulario intuitivo permite a los clientes seleccionar la sede, 
-  el barbero, el servicio deseado y la fecha/hora para su cita.
+Antes de empezar, asegúrate de tener instalado lo siguiente en tu sistema:
 
-- Visualizar Barberos:
-  Los clientes pueden explorar la lista de barberos disponibles 
-  en cada una de las sedes de la barbería.
-
-- Gestión de Citas:
-  Permite modificar los detalles de una reserva existente o 
-  cancelarla si es necesario.
+- ☕ **Java Development Kit (JDK)** – Versión 17 o superior  
+- 🧰 **Apache Maven** – Para compilar el proyecto y gestionar dependencias  
 
 -----------------------------
--- PORTAL DEL BARBERO --
+-- 2. INSTALACIÓN Y EJECUCIÓN --
 -----------------------------
 
-- Inicio de Sesión por Sede:
-  Los barberos seleccionan su sede y luego su nombre para acceder a 
-  su agenda personal.
+**Paso 1: Clonar el Repositorio**
+```
+git clone https://github.com/JuanRivera24/pi_movil2.0.git
+cd pi_movil2
+```
 
-- Visualización de Agenda:
-  Muestra una lista clara y ordenada de todas las citas agendadas, 
-  incluyendo fecha, hora, nombre del cliente y servicio.
+**Paso 2: Compilar y Ejecutar la Aplicación**
 
-- Detalles de la Cita:
-  Al hacer clic en una cita, el barbero es redirigido a una página 
-  dedicada con todos los detalles del servicio y del cliente, 
-  facilitando la preparación para el trabajo.
+Ejecutar "Run" en ApiApplication.java, o dar click en "Run Java"
 
-- Cancelación de Citas:
-  Permite a los barberos cancelar una cita directamente 
-  desde su agenda.
+
+La forma más sencilla de ejecutar un proyecto Spring Boot es utilizando el Maven Wrapper incluido:
+
+```bash
+# En Windows
+./mvnw spring-boot:run
+
+# En macOS/Linux
+./mvnw spring-boot:run
+```
+
+El servidor se iniciará y la API estará disponible en:  
+👉 **http://localhost:8080**
+
+**Nota sobre la Base de Datos:**  
+La API utiliza una base de datos en memoria **H2**, lo que significa que:
+- No necesitas instalar ninguna base de datos.
+- Los datos se cargan desde `src/main/resources/data.sql` cada vez que la aplicación arranca.
 
 ======================================================================
-               🛠️ TECNOLOGÍAS Y ARQUITECTURA
+               🧠 1. RESUMEN DEL PROYECTO
 ======================================================================
 
------------------------------
--- BACKEND (SPRING BOOT) --
------------------------------
+Esta API es el **núcleo** y la **fuente única de verdad** para todo el ecosistema **Kingdom Barber**.  
+Desarrollada con **Java y Spring Boot**, centraliza la lógica de negocio y la persistencia de datos,  
+sirviendo información de forma consistente a múltiples clientes.
 
-- Framework: Spring Boot
-- Lenguaje: Java
-- Arquitectura: Modelo-Vista-Controlador (MVC) adaptado para API REST
+**Clientes que consumen esta API:**
+- 💻 `pi_web2.0`: Aplicación web moderna (Next.js) para agendar citas, ver servicios y contactar la barbería.  
+- 📊 `pi_ntp2.0`: Dashboard de análisis en **Python/Streamlit** para reportes y visualizaciones.
 
-**Componentes Clave:**
-- Controladores (/controller): Endpoints RESTful para operaciones CRUD 
-  de citas, barberos, clientes, etc.
-- Modelos (/model): Entidades JPA que definen la estructura de datos.
-- Repositorios (/repository): Interfaces que utilizan Spring Data JPA 
-  para interactuar con la base de datos.
-
-**Base de Datos:**
-- Configurada en `application.properties`
-- Datos iniciales cargados con `data.sql`
-
------------------------------
--- FRONTEND (VANILLA JS, HTML5, CSS3) --
------------------------------
-
-- Lenguajes: JavaScript (ES6+), HTML5, CSS3
-- Librerías/Frameworks: Ninguno (Vanilla JS para demostrar dominio web)
-
-**Características Clave:**
-- Peticiones a la API con `fetch` para comunicación asíncrona.
-- Manipulación del DOM para mostrar listas de citas, barberos y detalles.
-- Gestión de datos en formato JSON entre cliente y servidor.
-- Diseño responsivo con CSS para una experiencia visual agradable.
+Esta arquitectura **desacopla completamente** el backend de los frontends,  
+permitiendo que cada componente evolucione de forma independiente.
 
 ======================================================================
-        ✅ CUMPLIMIENTO DE REQUISITOS DEL PROYECTO
+               🎯 2. OBJETIVOS DEL PROYECTO
 ======================================================================
 
 -----------------------------
--- FRONTEND --
+-- OBJETIVO PRINCIPAL --
 -----------------------------
 
-- Formularios de Ingreso (inputs, submit en HTML):  
-  CUMPLE. El sistema cuenta con formularios claros para agendar citas, 
-  seleccionar sede y filtrar datos.
-
-- Captura de Datos con FormData y JSON:  
-  CUMPLE. JavaScript captura los valores de los formularios, los convierte 
-  en objetos JSON y los envía al backend.
-
-- Peticiones y Envío de Datos con fetch:  
-  CUMPLE. Los scripts (cliente.js, barbero.js, detalle-cita.js) usan fetch 
-  para operaciones GET, POST y DELETE con la API de Spring Boot.
-
-- Presentación HTML con Diseño Mejorado:  
-  CUMPLE. La interfaz cuenta con estilo en CSS y organización en tarjetas, 
-  superando un diseño básico.
+Centralizar toda la lógica de negocio y la persistencia de datos del ecosistema **Kingdom Barber**  
+en una **única API RESTful** robusta, segura y escalable.
 
 -----------------------------
--- BACKEND --
+-- OBJETIVOS ESPECÍFICOS --
 -----------------------------
 
-- Recepción de Datos vía API REST:  
-  CUMPLE. Controladores como `CitaController.java` implementan endpoints 
-  RESTful (@GetMapping, @PostMapping, etc.).
+- ✅ **Proveer Endpoints Claros:** Endpoints RESTful bien definidos para operaciones CRUD (citas, galería, datos maestros, etc.)  
+- 🧩 **Desacoplar Clientes:** Permitir que los front-ends funcionen sin depender del almacenamiento de datos.  
+- 🔄 **Garantizar Consistencia:** Unificar lectura y escritura de datos para evitar duplicidad.  
+- 🚀 **Base Escalable:** Preparar el sistema para soportar nuevos clientes (como apps móviles).
 
-- Procesamiento de Datos (Casos de Uso):  
-  CUMPLE. La lógica incluye validaciones como verificar si un cliente 
-  existe antes de crear uno nuevo.
+======================================================================
+               ⚙️ 3. STACK TECNOLÓGICO
+======================================================================
 
-- Conexión con Base de Datos (CRUD):  
-  CUMPLE. Repositorios JPA permiten crear, leer, actualizar y eliminar 
-  citas, clientes y barberos.
+- 💻 **Lenguaje:** Java 17+  
+- 🧱 **Framework Principal:** Spring Boot 3.x  
+- 🗄️ **Acceso a Datos:** Spring Data JPA / Hibernate  
+- 🧬 **Base de Datos:** H2 Database (en memoria para desarrollo y pruebas)  
+- 🌐 **Servidor Web:** Apache Tomcat (embebido)  
+- 🧩 **Gestor de Dependencias:** Maven  
+- ✨ **Utilidades:** Lombok (reduce código repetitivo en modelos)
 
-- Generación de Respuestas JSON:  
-  CUMPLE. Los controladores devuelven objetos o listas que Spring Boot 
-  convierte automáticamente en JSON.
+======================================================================
+          🏗️ 4. ARQUITECTURA Y ESTRUCTURA DE CARPETAS
+======================================================================
+
+El proyecto sigue una arquitectura **API REST estándar**, organizada por responsabilidades:
+
+```
+src/main/java/com/kingdombarber/api/
+├── 📂 controller/   # Reciben peticiones HTTP y definen las URLs (endpoints)
+│   ├── AgendamientoController.java
+│   ├── ContactoController.java
+│   ├── DashboardController.java
+│   ├── DatosMaestrosController.java
+│   └── GaleriaController.java
+│
+├── 📂 model/        # Clases @Entity que representan las tablas de la base de datos
+│   ├── Barbero.java
+│   ├── Cita.java
+│   ├── Cliente.java
+│   ├── Contacto.java
+│   ├── Galeria.java
+│   ├── NuevaCita.java
+│   ├── Sede.java
+│   └── Servicio.java
+│
+├── 📂 repository/   # Interfaces que extienden JpaRepository para CRUD
+│   ├── BarberoRepository.java
+│   ├── CitaRepository.java
+│   └── ... (otros repositorios)
+│
+├── 📜 ApiApplication.java              # Punto de entrada principal
+├── 📜 WebConfig.java                   # Configuración CORS y archivos estáticos
+└── 📜 RequestLoggingInterceptor.java   # Middleware para registrar peticiones
+```
+
+```
+src/main/resources/
+├── 📜 application.properties  # Configuración de la base de datos, servidor, etc.
+└── 📜 data.sql                # Script SQL para la carga inicial de datos
+```
+
+======================================================================
+          🌐 5. DESCRIPCIÓN DE ENDPOINTS PRINCIPALES
+======================================================================
 
 -----------------------------
--- REQUISITOS ADICIONALES --
+-- DatosMaestrosController --
 -----------------------------
+- `GET /sedes` → Lista todas las sedes  
+- `GET /barberos` → Lista todos los barberos  
+- `GET /servicios` → Lista todos los servicios  
 
-- Ingreso por Roles (Cliente/Barbero):  
-  CUMPLE. El sistema diferencia roles y redirige a vistas específicas 
-  para cada tipo de usuario.  
+-----------------------------
+-- DashboardController (pi_ntp2.0) --
+-----------------------------
+- `GET /historial/citas` → Devuelve el historial completo (~4000 registros)  
+- `GET /clientes` → Devuelve la lista de clientes  
 
-- Funcionalidad del Cliente:  
-  CUMPLE. Puede ver barberos, sedes, servicios y pedir citas mediante 
-  un formulario.  
+-----------------------------
+-- AgendamientoController (pi_web2.0) --
+-----------------------------
+- `GET /citas-activas` → Devuelve las citas activas  
+- `POST /citas-activas` → Crea una nueva cita  
+- `PUT /citas-activas/{id}` → Modifica una cita existente  
+- `DELETE /citas-activas/{id}` → Elimina una cita  
 
-- Funcionalidad del Barbero:  
-  CUMPLE. Puede visualizar su agenda, consultar detalles de citas y 
-  cancelarlas directamente.  
+-----------------------------
+-- ContactoController --
+-----------------------------
+- `POST /contactanos` → Recibe y guarda mensajes del formulario de contacto  
 
-- Experiencia de Usuario Optimizada:  
-  CUMPLE. Diseño estructurado, validaciones y flujo amigable.  
+-----------------------------
+-- GaleriaController --
+-----------------------------
+- `GET /galeria` → Devuelve imágenes de la galería  
+- `POST /galeria/upload` → Sube una nueva imagen con descripción y categoría  
+- `PUT /galeria/{id}` → Modifica la información de una imagen  
+- `DELETE /galeria/{id}` → Elimina una imagen (de la base de datos y del disco)
 
-- Simulación de Componentes y Estado:  
-  CUMPLE. Aunque no se usa React, el sistema simula componentes con 
-  páginas reutilizables (ej. detalle-cita.html) y paso de datos mediante 
-  parámetros en la URL.
+======================================================================
+       🔁 6. FLUJO DE DATOS: CREACIÓN DE UNA CITA
+======================================================================
+
+1️⃣ **Cliente Front-End (pi_web2.0):**  
+El usuario completa el formulario de agendamiento y confirma la cita.
+
+2️⃣ **JavaScript (React):**  
+Captura los datos, construye un objeto JSON y envía una petición `POST` a  
+`http://localhost:8080/citas-activas`.
+
+3️⃣ **Controlador (API Java):**  
+`AgendamientoController` recibe la petición con `@PostMapping("/citas-activas")`.  
+Spring Boot convierte automáticamente el cuerpo JSON en un objeto `NuevaCita`.
+
+4️⃣ **Lógica de Negocio:**  
+El controlador complementa la información (por ejemplo, sede o servicio)  
+y llama al repositorio correspondiente.
+
+5️⃣ **Repositorio (JPA):**  
+`NuevaCitaRepository.save()` ejecuta el `INSERT INTO` en la base de datos H2.
+
+6️⃣ **Respuesta del Back-End:**  
+Devuelve la entidad creada como JSON con código `200 OK`.
+
+7️⃣ **Actualización del Front-End:**  
+React recibe la respuesta, actualiza su estado y muestra un mensaje de éxito.
+
+======================================================================
+        🧩 FIN DE LA DOCUMENTACIÓN TÉCNICA
+======================================================================
