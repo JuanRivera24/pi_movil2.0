@@ -22,7 +22,7 @@ public void addCorsMappings(CorsRegistry registry) {
     registry.addMapping("/**")
             .allowedOrigins(
                 "http://localhost:3000",
-                "https://pi-web2-0-two.vercel.app" // <-- AÑADE TU URL DE VERCEL AQUÍ
+                "https://pi-web2-six.vercel.app/" // <-- AÑADE TU URL DE VERCEL AQUÍ
             )
             .allowedMethods("GET", "POST", "PUT", "DELETE", "OPTIONS")
             .allowedHeaders("*")
