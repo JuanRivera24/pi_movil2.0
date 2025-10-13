@@ -7618,7 +7618,6 @@ INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha,
 INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (5998, 1200, 185, 205, 306, '2024-12-07', '19:00');
 INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (5999, 174, 121, 213, 302, '2025-05-03', '11:30');
 INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (6000, 2000, 158, 207, 304, '2025-09-12', '14:30');
--- =========== INSERTAR DATOS EN LA TABLA CITAS (TANDA 10 DE 12) ===========
 INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (6001, 163, 125, 214, 302, '2024-12-02', '18:00');
 INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (6002, 1768, 153, 215, 304, '2025-04-25', '12:30');
 INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (6003, 710, 140, 209, 303, '2025-08-05', '17:00');
