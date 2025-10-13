@@ -5500,7 +5500,7 @@ INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha,
 INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (3880, 1182, 187, 206, 306, '2025-07-06', '14:00');
 INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (3881, 155, 117, 215, 302, '2024-12-02', '18:00');
 INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (3882, 1759, 148, 201, 304, '2025-04-25', '12:30');
-INSERT INTO CITAS (ID_Cita, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (3883, 700, 135, 209, 303, '2025-08-05', '17:00');
+INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (3883, 700, 135, 209, 303, '2025-08-05', '17:00');
 INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (3884, 1411, 167, 204, 305, '2025-02-15', '11:30');
 INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (3885, 170, 102, 212, 301, '2025-06-20', '21:30');
 INSERT INTO CITAS (ID_Cita, ID_Cliente, ID_Barbero, ID_Servicio, ID_Sede, Fecha, Hora) VALUES (3886, 1986, 189, 208, 306, '2025-03-12', '16:30');
