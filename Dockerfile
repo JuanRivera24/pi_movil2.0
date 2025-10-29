@@ -1,5 +1,4 @@
 # --- Etapa de Construcción (Build Stage) ---
-# Usamos una imagen de Maven para construir el proyecto
 FROM maven:3.8.5-openjdk-17 AS build
 
 # Establecemos el directorio de trabajo dentro del contenedor
@@ -22,7 +21,6 @@ FROM openjdk:17-jdk-slim
 WORKDIR /app
 
 # Copiamos el archivo .jar construido desde la etapa anterior
-# <-- ¡LÍNEA CORREGIDA CON TU ARCHIVO .JAR!
 COPY --from=build /app/target/api-0.0.1-SNAPSHOT.jar app.jar
 
 # Exponemos el puerto en el que corre la aplicación (Spring Boot usa 8080 por defecto)

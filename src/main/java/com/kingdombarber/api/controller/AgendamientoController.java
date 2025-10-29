@@ -50,10 +50,6 @@ public class AgendamientoController {
         return nuevaCitaRepository.save(nuevaCita);
     }
 
-    /**
-     * UPDATE: Modifica una cita existente.
-     * --- VERSIÓN CORREGIDA Y COMPLETA ---
-     */
     @PutMapping("/citas-activas/{id}")
     public ResponseEntity<NuevaCita> updateNuevaCita(@PathVariable String id, @RequestBody NuevaCita citaActualizada) {
         return nuevaCitaRepository.findById(id)
